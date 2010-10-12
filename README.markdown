@@ -16,4 +16,4 @@
 For more details, see [my blog][1] entry and view [the demo][2] source.
 
   [1]: http://wowmotty.blogspot.com/2010/07/visual-navigation.html
-  [2]: http://www.myotherdrive.com/dyn/file/225.533312.09072010.20174.6a64fi/visualNav-demo-live.htm
+  [2]: http://mottie.github.com/visualNav/index.html
