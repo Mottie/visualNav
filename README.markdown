@@ -5,7 +5,7 @@
       link              : 'a',        // Add a link class, as necessary
       targetAttr        : 'href',     // added in case you have link = "div" and attribute something like
       selectedClass     : 'selected', // css class applied to menu
-      selectedAppliedTo : 'li',       // to only apply to the link, use "andSelf"
+      selectedAppliedTo : 'li',       // to only apply to the link, use "a"
       topRange          : 100,        // measure from the top of the viewport to X pixels down
       topMargin         : 100,        // margin above the top where the target updates the menu
       bottomMargin      : 20,         // margin from the end of the page where the last menu item is used (in case the target is short)
