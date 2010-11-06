@@ -1,5 +1,5 @@
 /*
- * visualNavigation (visualNav)
+ * visualNavigation (visualNav) v2.0
  * http://wowmotty.blogspot.com/2010/07/visual-navigation.html
  *
  * Copyright (c) 2010 Rob Garrison (aka Mottie & Fudgey)
@@ -31,7 +31,7 @@
    });
    // Animate menu scroll to content
    base.$el.find(base.options.link).click(function(){
-    var sel = $(this).attr(base.options.targetAttr);
+    var newTop, sel = $(this).attr(base.options.targetAttr);
     if ($(sel).length) {
      // get content top or top position if at the document bottom
      newTop = Math.min( $(sel).offset().top, $(document).height() - $(window).height() );
@@ -49,20 +49,28 @@
 
   // Update menu
   base.findLocation = function(){
-   var winTop = $(window).scrollTop();
+   var tar, loc, sel, elBottom, elHeight,
+    winTop = $(window).scrollTop(),
+    winBottom = winTop + $(window).height(),
+    docHeight = $(document).height(),
+    el = base.$el.find(base.options.selectedAppliedTo).removeClass(base.options.inViewClass);
    // cycling through each link during the scroll may be slow on some computers/browsers
    base.$el.find(base.options.link).each(function(i){
-    var tar = $( $(this).attr(base.options.targetAttr) );
+    tar = $( $(this).attr(base.options.targetAttr) );
     if (tar.length) {
-     var loc = tar.offset().top;
-     if ( loc > winTop - base.options.topMargin && 
-        ( loc < winTop + base.options.topRange || ( winTop + $(window).height() + base.options.bottomMargin ) >= $(document).height() ) ){
-      base.$el.find(base.options.selectedAppliedTo) // add selected 
-       .removeClass(base.options.selectedClass)
-       .eq(i).addClass(base.options.selectedClass);
+     loc = tar.offset().top;
+     elHeight = tar.nextAll(base.options.contentClass + ':first').outerHeight();
+     elBottom = loc + elHeight + base.options.bottomMargin;
+     // in view class
+     if ( loc < winBottom && ( loc + elHeight - base.options.bottomMargin > winTop || elBottom > winBottom ) ) {
+      el.eq(i).addClass(base.options.inViewClass);
      }
     }
    });
+   // add selected class. If at the document end, select the last element
+   sel = ( winBottom + base.options.bottomMargin >= docHeight ) ? ':last' : ':first';
+   el.removeClass(base.options.selectedClass);
+   el.filter('.' + base.options.inViewClass + sel).addClass(base.options.selectedClass);
   };
 
   // Run initializer
@@ -75,11 +83,11 @@
   // the link = "div.link" and targetAttr = "data-target"
   link              : 'a',        // Add a link class, as necessary
   targetAttr        : 'href',     // added in case you have link = "div" and attribute something like
+  inViewClass       : 'inView',   // css class added to items in the viewport
   selectedClass     : 'selected', // css class applied to menu
-  selectedAppliedTo : 'li',       // to only apply to the link, use "andSelf"
-  topRange          : 100,        // measure from the top of the viewport to X pixels down
-  topMargin         : 100,        // margin above the top where the target updates the menu
-  bottomMargin      : 20,         // margin from the end of the page where the last menu item is used (in case the target is short)
+  selectedAppliedTo : 'li',       // to only apply to the link, use the same value as is in the link option
+  contentClass      : '.content', // content class to get height of the section
+  bottomMargin      : 100,        // margin from the end of the page where the last menu item is used (in case the target is short)
   animationTime     : 1200        // time in milliseconds
  };
 
