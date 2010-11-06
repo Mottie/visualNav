@@ -191,4 +191,4 @@ For more details, see [my blog][1] entry and view [the demo][2] source.
 
   [1]: http://wowmotty.blogspot.com/2010/07/visual-navigation.html
   [2]: http://mottie.github.com/visualNav/index.html
-  [3]: images/visualNav2Layout.jpg
+  [3]: http://mottie.github.com/visualNav/images/visualNav2Layout.jpg
