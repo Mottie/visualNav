@@ -1,5 +1,5 @@
 /*
- * visualNavigation (visualNav) v2.0
+ * visualNavigation (visualNav) v2.0.1
  * http://wowmotty.blogspot.com/2010/07/visual-navigation.html
  *
  * Copyright (c) 2010 Rob Garrison (aka Mottie & Fudgey)
@@ -59,7 +59,7 @@
     tar = $( $(this).attr(base.options.targetAttr) );
     if (tar.length) {
      loc = tar.offset().top;
-     elHeight = tar.nextAll(base.options.contentClass + ':first').outerHeight();
+     elHeight = tar.outerHeight();
      elBottom = loc + elHeight + base.options.bottomMargin;
      // in view class
      if ( loc < winBottom && ( loc + elHeight - base.options.bottomMargin > winTop || elBottom > winBottom ) ) {

@@ -10,8 +10,7 @@
 #sidemenu li.inView   { border-color: #111; }
 
 /* main content header & wrapper */
-h2                    { margin-left: 170px; }
-.content              { min-width: 500px; background: #363636; border: #555 1px solid; margin: 10px 20px 50px 170px; padding: 10px; }
+.content              { min-width: 500px; background: #363636; border: #555 1px solid; margin: 10px 20px 50px 170px; padding: 10px 20px; }
 
 /*** Demo ***/
 body               { background: #333; color: #ddd; }
@@ -20,6 +19,7 @@ a:hover            { color: #fff; }
 a:visited,a:active { color: #f80; }
 
 /* demo content */
+.content h2        { margin: 5px 5px 20px 5px; }
 .content br        { clear: both; }
 .content li        { padding-right: 25px; }
 

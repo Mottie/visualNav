@@ -14,10 +14,9 @@
         #sidemenu a:hover { color: #fff; }
 
         /* main content */
-        h2 { margin-left: 170px; }
         .content { min-width: 500px; background: #363636; border: #555 1px solid; margin: 10px 20px 50px 170px; padding: 10px; }
 
-* Html
+* HTML
 
         <!-- visualNav default menu -->
         <div id="sidemenu">
@@ -29,23 +28,20 @@
         </div>
 
         <!-- main contents -->
-        <div id="main">
+        <div>
 
-          <a id="home"></a>
-          <h2>Home</h2>
-          <div class="content">
+          <div id="home" class="content">
+            <h2>Home</h2>
             Home Content Here...
           </div>
 
-          <a id="work"></a>
-          <h2>Work</h2>
-          <div class="content">
+          <div id="work" class="content">
+            <h2>Work</h2>
             Work Content Here...
           </div>
 
-          <a id="contact"></a>
-          <h2>Contact</h2>
-          <div class="content">
+          <div class="contact content">
+            <h2>Contact</h2>
             Contact Info Here...
           </div>
 
@@ -76,10 +72,9 @@
         #menu div.selected { background: #555; }
 
         /* main content */
-        h2 { margin-left: 170px; }
         .content { min-width: 500px; background: #363636; border: #555 1px solid; margin: 10px 20px 50px 170px; padding: 10px; }
 
-* Html
+* HTML
 
     * This side menu uses divs with a title attribute. The value in this attribute can be used to target an Id or a class (which should be unique).
     * It is important to note, that this menu will not work with javascript disabled, whereas the default one will work.
@@ -92,23 +87,20 @@
             </div>
 
             <!-- main contents -->
-            <div id="main">
+            <div>
 
-              <a id="home"></a>
-              <h2>Home</h2>
-              <div class="content">
+              <div id="home" class="content">
+                <h2>Home</h2>
                 Home Content Here...
               </div>
 
-              <a id="work"></a>
-              <h2>Work</h2>
-              <div class="content">
+              <div id="work" class="content">
+                <h2>Work</h2>
                 Work Content Here...
               </div>
 
-              <a class="contact"></a>
-              <h2>Contact</h2>
-              <div class="content">
+              <div class="contact content">
+                <h2>Contact</h2>
                 Contact Info Here...
               </div>
 
@@ -173,6 +165,10 @@
 
 
 **Change Log**
+
+* Version 2.0.1
+
+    * Removed required anchor (<code>a</code>) before the content block - changed base HTML. The script now targets the content block.
 
 * Version 2.0
 
