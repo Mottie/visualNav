@@ -177,7 +177,7 @@
 
 **Methods**
 
-* You can set the selected menu item (smooth scroll to the block) either of the following methods (they both do the same thing):
+* You can set the selected menu item (smooth scroll to the block) using either of the following methods (they both do the same thing):
 
         // '#blog' can be any ID on the page
         $('#menu').visualNav('#blog');
@@ -194,9 +194,9 @@
 
 * Version 2.1
 
-    * Added <code>contentLinks</code> option that targets elements on the page (e.g. links) that will act like the menu links. These elements
+    * Added <code>contentLinks</code> option that targets elements on the page (e.g. links). These links will smooth scroll to the targeted ID (any ID on the page) just like the menu.
     * Added a new Method to control the script without using a link. All you need to do is call the script with the section ID with either method described above.
-    * This new Method will allow you to smoothly scroll to ANY ID on the page.
+    * This new Method will allow you to smoothly scroll to any ID on the page.
     * Changed <code>contentClass</code> value from '.content' to 'content'. It shouldn't have had the period in front in the first place.
 
 * Version 2.0.1
