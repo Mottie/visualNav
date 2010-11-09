@@ -33,16 +33,22 @@
           <div id="home" class="content">
             <h2>Home</h2>
             Home Content Here...
+            <!-- optional links -->
+            Go to: <a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#contact" class="visualNav">Contact</a> 
           </div>
 
           <div id="work" class="content">
             <h2>Work</h2>
             Work Content Here...
+            <!-- optional links -->
+            Go to: <a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#contact" class="visualNav">Contact</a> 
           </div>
 
           <div class="contact content">
             <h2>Contact</h2>
             Contact Info Here...
+            <!-- optional links -->
+            Go to: <a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#contact" class="visualNav">Contact</a> 
           </div>
 
         </div>
@@ -51,14 +57,15 @@
 
         $(document).ready(function(){
           $('#sidemenu').visualNav({
-            link              : 'a',        // Add a link class, as necessary
-            targetAttr        : 'href',     // added in case you have link = "div" and attribute something like
-            inViewClass       : 'inView',   // css class added to items in the viewport
-            selectedClass     : 'selected', // css class applied to menu
-            selectedAppliedTo : 'li',       // to only apply to the link, use the same value as is in the link option
-            contentClass      : '.content', // content class to get height of the section
-            bottomMargin      : 100,        // margin from the end of the page where the last menu item is used (in case the target is short)
-            animationTime     : 1200        // time in milliseconds
+            link              : 'a',         // add a link class, as necessary (e.g. 'a.menu')
+            targetAttr        : 'href',      // added in case you have link = "div" and attribute something like
+            inViewClass       : 'inView',    // css class added to items in the viewport
+            selectedClass     : 'selected',  // css class applied to menu when a link is selected (highlighted)
+            selectedAppliedTo : 'li',        // to only apply to the link, use the same value as is in the link option
+            contentClass      : 'content',   // content class to get height of the section
+            contentLinks      : 'visualNav', // class name of links inside the content that act like the visualNav menu (smooth scroll)
+            bottomMargin      : 100,         // margin from the end of the page where the last menu item is used (in case the target is short)
+            animationTime     : 1200         // time in milliseconds
           })
         })
 
@@ -92,16 +99,22 @@
               <div id="home" class="content">
                 <h2>Home</h2>
                 Home Content Here...
+                <!-- optional links -->
+                Go to: <a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#contact" class="visualNav">Contact</a> 
               </div>
 
               <div id="work" class="content">
                 <h2>Work</h2>
                 Work Content Here...
+                <!-- optional links -->
+                Go to: <a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#contact" class="visualNav">Contact</a> 
               </div>
 
               <div class="contact content">
                 <h2>Contact</h2>
                 Contact Info Here...
+                <!-- optional links -->
+                Go to: <a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#contact" class="visualNav">Contact</a> 
               </div>
 
             </div>
@@ -142,7 +155,11 @@
 
 * <code>contentClass</code>
     * Each block of main content (not the visualNav menu) should be wrapped. This option targets the class of the wrapper because the script needs to determine the height of the content to best update the menu.
-    * Default value is '.content'.
+    * Default value is 'content'.
+
+* <code>contentLinks</code>
+    * The plugin will find Links anywhere on the page with this class. These links will act like the menu and smooth scroll to the matching section.
+    * Default value is 'visualNav'.
 
 * <code>bottomMargin</code>
 
@@ -158,13 +175,29 @@
     * The animation time is the time in milliseconds that the menu will scroll to the selected section.
     * Default value is 1200 (milliseconds).
 
+**Methods**
+
+* You can set the selected menu item (smooth scroll to the block) either of the following methods (they both do the same thing):
+
+        // '#blog' can be any ID on the page
+        $('#menu').visualNav('#blog');
+
+        // or use
+        $('#menu').data('visualNav').animate('#blog');
+
 **Known Problems &amp; Bugs**
 
 * The menu will not select (or highlight) the item above the last item if they are both very short. For example, if your browser shows three sections while at the bottom of the page. The third to last may have shown for a brief time just before the bottom of the page reached the bottom edge margin. The menu would then skip directly to the last menu item. This is one reason why the bottom margin value is kept a low number (100 pixels by default).
 * If you click on a menu item, the page contents will automatically scroll to that section and update the browser url with that target. But if you manually scroll the page using the scroll bar or mouse, the web page url will not update with the current position. This was done on purpose, because if the script changes the location, the page will jump to that target automatically. This wouldn't look good if you are quickly scrolling through the page as it would make the movement jittery.
 
-
 **Change Log**
+
+* Version 2.1
+
+    * Added <code>contentLinks</code> option that targets elements on the page (e.g. links) that will act like the menu links. These elements
+    * Added a new Method to control the script without using a link. All you need to do is call the script with the section ID with either method described above.
+    * This new Method will allow you to smoothly scroll to ANY ID on the page.
+    * Changed <code>contentClass</code> value from '.content' to 'content'. It shouldn't have had the period in front in the first place.
 
 * Version 2.0.1
 

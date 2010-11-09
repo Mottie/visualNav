@@ -23,6 +23,8 @@ a:visited,a:active { color: #f80; }
 .content br        { clear: both; }
 .content li        { padding-right: 25px; }
 
+.links             { font-size: .8em; }
+
 .right             { float: right; padding: 5px 8px; }
 .right a, .left a  { font-size: 12px; padding: 0 10px; }
 .left img          { float: left; margin-right: 10px; }
