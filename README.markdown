@@ -192,6 +192,10 @@
 
 **Change Log**
 
+* Version 2.1.1
+
+    * Fixed a problem that occurred when the menu contains a link that doesn't target anything (i.e. `<a href="#">Link</a>`)
+
 * Version 2.1
 
     * Added <code>contentLinks</code> option that targets elements on the page (e.g. links). These links will smooth scroll to the targeted ID (any ID on the page) just like the menu.

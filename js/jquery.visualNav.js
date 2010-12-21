@@ -1,5 +1,5 @@
 /*
- * visualNavigation (visualNav) v2.1
+ * visualNavigation (visualNav) v2.1.1
  * http://wowmotty.blogspot.com/2010/07/visual-navigation.html
  *
  * Copyright (c) 2010 Rob Garrison (aka Mottie & Fudgey)
@@ -21,12 +21,18 @@
   // Add a reverse reference to the DOM object
   base.$el.data("visualNav", base);
 
+  // cached objects
+  base.w = window;
+  base.win = $(base.w);
+  base.doc = $(document);
+  base.body = $('html,body');
+
   base.init = function(){
    base.options = $.extend({},$.visualNav.defaultOptions, options);
    // Stop animated scroll if the user does something
-   $('html,body').bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
-    if ( e.which > 0 || e.type == 'mousedown' || e.type == 'mousewheel' ){
-     $('html,body').stop();
+   base.body.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
+    if ( e.which > 0 || e.type === 'mousedown' || e.type === 'mousewheel' ){
+     base.body.stop();
     }
    });
    // Animate menu scroll to content
@@ -36,22 +42,22 @@
     .click(function(){
      // contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
      // just in case the base.options.link isn't an <a>
-     var att = (this.tagName == "A") ? 'href' : base.options.targetAttr;
+     var att = (this.tagName === "A") ? 'href' : base.options.targetAttr;
      base.animate($(this).attr(att));
      return false;
     });
    // Adjust side menu on scroll and resize
-   $(window)
+   base.win
     .scroll(function(){ base.findLocation(); })
     .resize(function(){ base.findLocation(); });
   };
 
   base.animate = function(sel){
-   if ($(sel).length) {
+   if (sel !== '#' && $(sel).length) {
     // get content top or top position if at the document bottom, then animate
-    var newTop = Math.min( $(sel).offset().top, $(document).height() - $(window).height() );
-    $('html,body').stop().animate({ 'scrollTop' : newTop }, base.options.animationTime, function(){
-     window.location.hash = sel;
+    var newTop = Math.min( $(sel).offset().top, base.doc.height() - base.win.height() );
+    base.body.stop().animate({ 'scrollTop' : newTop }, base.options.animationTime, function(){
+     base.w.location.hash = sel;
     });
    }
   };
@@ -59,13 +65,16 @@
   // Update menu
   base.findLocation = function(){
    var tar, loc, sel, elBottom, elHeight,
-    winTop = $(window).scrollTop(),
-    winBottom = winTop + $(window).height(),
-    docHeight = $(document).height(),
+    winTop = base.win.scrollTop(),
+    winBottom = winTop + base.win.height(),
+    docHeight = base.doc.height(),
     el = base.$el.find(base.options.selectedAppliedTo).removeClass(base.options.inViewClass);
    // cycling through each link during the scroll may be slow on some computers/browsers
+
    base.$el.find(base.options.link).each(function(i){
-    tar = $( $(this).attr(base.options.targetAttr) );
+    sel = $(this).attr(base.options.targetAttr);
+    if (sel === "#" || sel.length <= 1) { sel = ''; } // ignore links that don't point anywhere
+    tar = $(sel);
     if (tar.length) {
      loc = tar.offset().top;
      elHeight = tar.outerHeight();
@@ -105,7 +114,7 @@
   return this.each(function(){
    var nav = $(this).data('visualNav');
    // string provided, check if it's an ID
-   if (typeof options == "string" && /^#/.test(options)) {
+   if (typeof options === "string" && /^#/.test(options)) {
     nav.animate(options);
    }
    // don't allow multiple instances
