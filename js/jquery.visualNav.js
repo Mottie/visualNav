@@ -1,5 +1,5 @@
 /*
- * visualNavigation (visualNav) v2.1.1
+ * visualNavigation (visualNav) v2.1.2
  * http://wowmotty.blogspot.com/2010/07/visual-navigation.html
  *
  * Copyright (c) 2010 Rob Garrison (aka Mottie & Fudgey)
@@ -25,7 +25,18 @@
   base.w = window;
   base.win = $(base.w);
   base.doc = $(document);
-  base.body = $('html,body');
+  // Opera scrolling fix - http://www.zachstronaut.com/posts/2009/01/18/jquery-smooth-scroll-bugs.html
+  var scrollElement = 'html, body';
+  $('html, body').each(function(){
+   var initScrollTop = $(this).attr('scrollTop');
+   $(this).attr('scrollTop', initScrollTop + 1);
+   if ($(this).attr('scrollTop') === initScrollTop + 1) {
+    scrollElement = this.nodeName.toLowerCase();
+    $(this).attr('scrollTop', initScrollTop);
+    return false;
+   }    
+  });
+  base.body = $(scrollElement);
 
   base.init = function(){
    base.options = $.extend({},$.visualNav.defaultOptions, options);
