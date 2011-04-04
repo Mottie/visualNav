@@ -1,6 +1,6 @@
 /*** CSS for Default visualNav HTML ***/
 /* side menu with visualNav */
-#sidemenu             { position: fixed; top: 50px; left: 20px; background: #444; width: 120px; }
+#sidemenu             { text-align: center; position: fixed; top: 50px; left: 20px; background: #444; width: 120px; z-index: 10; padding: 1px 1px 5px 1px; }
 #sidemenu ul          { list-style-type: none; margin: 0; padding: 0; }
 #sidemenu li          { margin: 5px; padding: 5px; width: 100px; text-align: center; border: transparent 1px solid; }
 #sidemenu a           { text-decoration: none; color: #bbbbff; }
@@ -10,7 +10,7 @@
 #sidemenu li.inView   { border-color: #111; }
 
 /* main content header & wrapper */
-.content              { min-width: 500px; background: #363636; border: #555 1px solid; margin: 10px 20px 50px 170px; padding: 10px 20px; }
+.content              { min-width: 500px; background: #363636; border: #555 1px solid; margin: 10px 75px 50px 175px; padding: 10px 20px; }
 
 /*** Demo ***/
 body               { background: #333; color: #ddd; }
@@ -23,6 +23,10 @@ a:visited,a:active { color: #f80; }
 .content br        { clear: both; }
 .content li        { padding-right: 25px; }
 
+/*** Demo 2 ***/
+body#demo2         { width: 3500px; }
+#demo2 .content    { float: left; width: 700px; min-height: 500px; }
+
 .links             { font-size: .8em; }
 
 .right             { float: right; padding: 5px 8px; }
@@ -31,5 +35,5 @@ a:visited,a:active { color: #f80; }
 .left p            { padding-left: 5px; }
 
 /* footer */
-#footer            { height: 50px; padding: 10px; background: #444; text-align: center; font-size: 0.8em; }
+#footer            { height: 50px; padding: 10px; background: #444; text-align: center; font-size: 0.8em; clear: both; }
 .spacer            { height: 100px; }

@@ -8,12 +8,15 @@
 
 <script src="js/jquery.visualNav.js" type="text/javascript"></script>
 <script type="text/javascript">
-$(document).ready(function(){
- $('#sidemenu').visualNav();
+$(window).load(function(){
+ $('#sidemenu').visualNav({
+  fitContent : true,
+  easing     : [ 'swing', 'easeInCirc' ] // x,y easing; if might be best to set one axis to swing [ 'swing', 'easeInCirc' ]
+ });
 });
 </script>
 
-</head><body>
+</head><body id="demo2">
 
  <!-- menu with visualNav applied -->
  <div id="sidemenu">
@@ -25,11 +28,11 @@ $(document).ready(function(){
   <li><a href="#about">About</a></li>
   <li><a href="#contact">Contact</a></li>
  </ul>
- <hr><a class="otherdemo" href="index2.html">Demo 2</a>
+  <hr><a class="otherdemo" href="index.html">Demo 1</a>
  </div>
 
  <!-- main contents -->
-
+ <div id="main">
   <div id="home" class="content">
    <h2>Home</h2>
    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae sem nec urna interdum tempor vitae quis dolor. Nulla congue, turpis vitae dapibus gravida, purus turpis ornare nibh, sed ornare augue nulla ut mi. Maecenas ligula ante, fermentum ut imperdiet viverra, tristique in risus. Fusce interdum magna et felis aliquam pulvinar. <br>
@@ -121,7 +124,7 @@ $(document).ready(function(){
    <br>
    <div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
   </div>
-
+ </div>
 <!-- end contents -->
 
  <div id="footer">
