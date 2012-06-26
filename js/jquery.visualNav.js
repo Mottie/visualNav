@@ -71,21 +71,23 @@ $.visualNav = function(el, options){
 	base.animate = function(sel){
 		if (sel !== '#' && $(sel).length) { // ignore non-existant targets & solitary '#'
 			var $sel = $(sel).eq(0).closest('.' + base.options.contentClass);
-			// get content top or top position if at the document bottom, then animate
-			base.$body.stop().animate({
-				scrollLeft : Math.min( $sel.offset().left, base.$doc.width() - base.$win.width() ) - base.leftMargin,
-				scrollTop  : Math.min( $sel.offset().top, base.$doc.height() - base.$win.height() )
-			},{
-				queue         : false,
-				duration      : base.options.animationTime,
-				specialEasing : {
-					scrollLeft  : base.options.easing[0] || 'swing',
-					scrollTop   : base.options.easing[1] || base.options.easing[0] || 'swing'
-				},
-				complete      : function(){
-					if (base.options.useHash) { base.win.location.hash = $sel[0].id; }
-				}
-			});
+			if ($sel.length) {
+				// get content top or top position if at the document bottom, then animate
+				base.$body.stop().animate({
+					scrollLeft : Math.min( $sel.offset().left, base.$doc.width() - base.$win.width() ) - base.leftMargin,
+					scrollTop  : Math.min( $sel.offset().top, base.$doc.height() - base.$win.height() )
+				},{
+					queue         : false,
+					duration      : base.options.animationTime,
+					specialEasing : {
+						scrollLeft  : base.options.easing[0] || 'swing',
+						scrollTop   : base.options.easing[1] || base.options.easing[0] || 'swing'
+					},
+					complete      : function(){
+						if (base.options.useHash) { base.win.location.hash = $sel[0].id; }
+					}
+				});
+			}
 		}
 	};
 
