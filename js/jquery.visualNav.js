@@ -11,7 +11,7 @@
 $.visualNav = function(el, options){
 
 	// Access to jQuery and DOM versions of element
-	var base = this;
+	var o, base = this;
 	base.$el = $(el);
 
 	// Add a reverse reference to the DOM object
@@ -35,13 +35,13 @@ $.visualNav = function(el, options){
 	base.$body = $(scrollElement);
 
 	base.init = function(){
-		base.options = $.extend({},$.visualNav.defaultOptions, options);
-		base.content = $('.' + base.options.contentClass);
+		base.options = o = $.extend({}, $.visualNav.defaultOptions, options);
+		base.content = $('.' + o.contentClass);
 		base.leftMargin = parseInt( base.content.css('margin-left'), 10);
 		base.rightMargin = parseInt( base.content.css('margin-right'), 10);
 
 		// check easing
-		if (!$.isFunction($.easing[base.options.easing[0]])) { base.options.easing = ['swing', 'swing']; }
+		if (!$.isFunction($.easing[o.easing[0]])) { o.easing = ['swing', 'swing']; }
 
 		// Stop animated scroll if the user does something
 		base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
@@ -51,14 +51,14 @@ $.visualNav = function(el, options){
 		});
 
 		// Find specific menu links (this roundabout way is needed so ordinary links in the menu continue to work - like the link to other demo)
-		var links = base.options.selectedAppliedTo + (base.options.selectedAppliedTo === base.options.link ? '' : ' ' + base.options.link);
+		var links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
 		base.$el.find(links)
 			// add links inside the content - the links must have a "visualNav" class name
-			.add( $('.' + base.options.contentLinks) )
+			.add( $('.' + o.contentLinks) )
 			.click(function(){
 				// contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
-				// just in case the base.options.link isn't an <a>
-				var att = (this.tagName === "A") ? 'href' : base.options.targetAttr;
+				// just in case the o.link isn't an <a>
+				var att = (this.tagName === "A") ? 'href' : o.targetAttr;
 				base.animate($(this).attr(att));
 				return false;
 			});
@@ -70,11 +70,11 @@ $.visualNav = function(el, options){
 
 	base.animate = function(sel){
 		if (sel !== '#' && $(sel).length) { // ignore non-existant targets & solitary '#'
-			var $sel = $(sel).eq(0).closest('.' + base.options.contentClass);
+			var $sel = $(sel).eq(0).closest('.' + o.contentClass);
 			if ($sel.length) {
 				// callback before animation
-				if (typeof base.options.beforeAnimation === 'function') {
-					base.options.beforeAnimation(base, $sel);
+				if (typeof o.beforeAnimation === 'function') {
+					o.beforeAnimation(base, $sel);
 				}
 				// get content top or top position if at the document bottom, then animate
 				base.$body.stop().animate({
@@ -82,16 +82,16 @@ $.visualNav = function(el, options){
 					scrollTop  : Math.min( $sel.offset().top, base.$doc.height() - base.$win.height() )
 				},{
 					queue         : false,
-					duration      : base.options.animationTime,
+					duration      : o.animationTime,
 					specialEasing : {
-						scrollLeft  : base.options.easing[0] || 'swing',
-						scrollTop   : base.options.easing[1] || base.options.easing[0] || 'swing'
+						scrollLeft  : o.easing[0] || 'swing',
+						scrollTop   : o.easing[1] || o.easing[0] || 'swing'
 					},
 					complete      : function(){
-						if (base.options.useHash) { base.win.location.hash = $sel[0].id; }
+						if (o.useHash) { base.win.location.hash = $sel[0].id; }
 						// callback when animation has completed
-						if (typeof base.options.complete === 'function') {
-							base.options.complete(base, $sel);
+						if (typeof o.complete === 'function') {
+							o.complete(base, $sel);
 						}
 					}
 				});
@@ -108,42 +108,42 @@ $.visualNav = function(el, options){
 		winRight = winLeft + winWidth,
 		winBottom = winTop + base.$win.height(),
 		docHeight = base.$doc.height(),
-		el = base.$el.find(base.options.selectedAppliedTo).removeClass(base.options.inViewClass);
+		el = base.$el.find(o.selectedAppliedTo).removeClass(o.inViewClass);
 		// Make content fit on screen
-		if (base.options.fitContent) {
+		if (o.fitContent) {
 			base.content.width( winWidth - base.leftMargin - base.rightMargin );
 		}
 		// cycling through each link during the scroll may be slow on some computers/browsers
-		base.$el.find(base.options.link).each(function(i){
-			sel = $(this).attr(base.options.targetAttr);
+		base.$el.find(o.link).each(function(i){
+			sel = $(this).attr(o.targetAttr);
 			tar = (sel === "#" || sel.length <= 1) ? '' : $(sel); // ignore links that don't point anywhere
 			if (tar.length) {
 				locTop = Math.ceil(tar.offset().top);
 				locLeft = Math.ceil(tar.offset().left);
 				elHeight = tar.outerHeight();
-				elBottom = locTop + elHeight + base.options.bottomMargin;
+				elBottom = locTop + elHeight + o.bottomMargin;
 				elWidth = tar.outerWidth();
 				elRight = locLeft + elWidth;
 				// in view class
-				if ( locTop < winBottom && ( locTop + elHeight - base.options.bottomMargin > winTop || elBottom > winBottom ) &&
-				locLeft < winRight && ( locLeft + elWidth - base.options.bottomMargin > winLeft || elRight > winRight ) ) {
-					el.eq(i).addClass(base.options.inViewClass);
+				if ( locTop < winBottom && ( locTop + elHeight - o.bottomMargin > winTop || elBottom > winBottom ) &&
+				locLeft < winRight && ( locLeft + elWidth - o.bottomMargin > winLeft || elRight > winRight ) ) {
+					el.eq(i).addClass(o.inViewClass);
 				}
 			}
 		});
 		// add selected class. If at the document end, select the last element
-		sel = ( winBottom + base.options.bottomMargin >= docHeight ) ? ':last' : ':first';
-		el.removeClass(base.options.selectedClass);
-		el.filter('.' + base.options.inViewClass + sel).addClass(base.options.selectedClass);
+		sel = ( winBottom + o.bottomMargin >= docHeight ) ? ':last' : ':first';
+		el.removeClass(o.selectedClass);
+		el.filter('.' + o.inViewClass + sel).addClass(o.selectedClass);
 	};
 
 	// Run initializer
 	base.init();
 	// go to hash on page load
-	if (base.options.useHash && base.win.location.hash) {
+	if (o.useHash && base.win.location.hash) {
 		setTimeout(function(){
 			base.animate(base.win.location.hash);
-		}, base.options.animationTime/2);
+		}, o.animationTime/2);
 	}
 	base.findLocation();
 };
