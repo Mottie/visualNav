@@ -64,8 +64,8 @@ $.visualNav = function(el, options){
 			});
 		// Adjust side menu on scroll and resize
 		base.$win
-			.scroll(function(){ base.findLocation(); })
-			.resize(function(){ base.findLocation(); });
+			.scroll(function(){ base.throttle(); })
+			.resize(function(){ base.throttle(); });
 	};
 
 	base.animate = function(sel){
@@ -93,10 +93,21 @@ $.visualNav = function(el, options){
 						if (typeof o.complete === 'function') {
 							o.complete(base, $sel);
 						}
+						// clear throttle flag, just in case
+						base.flag = false;
 					}
 				});
 			}
 		}
+	};
+
+	base.throttle = function(){
+		if (base.flag) { return; }
+		base.flag = true;
+		base.findLocation();
+		base.timer = setTimeout(function(){
+			base.flag = false;
+		}, 50);
 	};
 
 	// Update menu
@@ -167,11 +178,11 @@ $.visualNav.defaultOptions = {
 	fitContent        : false,       // If true, the contentClass width will be adjusted to fit the browser window (for horizontal pages).
 
 	// Animation
-	animationTime     : 1200,                // time in milliseconds.
-	easing            : [ 'swing', 'swing' ] // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
+	animationTime     : 1200,                 // time in milliseconds.
+	easing            : [ 'swing', 'swing' ], // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
 
 	// Callbacks
-	beforeAnimation   : null         // Callback executed before the animation begins moving to the targetted element
+	beforeAnimation   : null,        // Callback executed before the animation begins moving to the targetted element
 	complete          : null         // Callback executed when the targetted element is in view and scrolling animation has completed
 };
 
