@@ -72,6 +72,10 @@ $.visualNav = function(el, options){
 		if (sel !== '#' && $(sel).length) { // ignore non-existant targets & solitary '#'
 			var $sel = $(sel).eq(0).closest('.' + base.options.contentClass);
 			if ($sel.length) {
+				// callback before animation
+				if (typeof base.options.beforeAnimation === 'function') {
+					base.options.beforeAnimation(base, $sel);
+				}
 				// get content top or top position if at the document bottom, then animate
 				base.$body.stop().animate({
 					scrollLeft : Math.min( $sel.offset().left, base.$doc.width() - base.$win.width() ) - base.leftMargin,
@@ -85,6 +89,10 @@ $.visualNav = function(el, options){
 					},
 					complete      : function(){
 						if (base.options.useHash) { base.win.location.hash = $sel[0].id; }
+						// callback when animation has completed
+						if (typeof base.options.complete === 'function') {
+							base.options.complete(base, $sel);
+						}
 					}
 				});
 			}
@@ -161,6 +169,10 @@ $.visualNav.defaultOptions = {
 	// Animation
 	animationTime     : 1200,                // time in milliseconds.
 	easing            : [ 'swing', 'swing' ] // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
+
+	// Callbacks
+	beforeAnimation   : null         // Callback executed before the animation begins moving to the targetted element
+	complete          : null         // Callback executed when the targetted element is in view and scrolling animation has completed
 };
 
 $.fn.visualNav = function(options){
