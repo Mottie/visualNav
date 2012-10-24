@@ -1,46 +1,72 @@
 <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>visualNav Horizontal & Vertical demo</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>visualNav + Bootstrap demo</title>
 
+	<link rel="stylesheet" href="demo/bootstrap.min.css">
 	<link rel="stylesheet" href="css/demo.css">
-
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<style>
+	/*** Bootstrap demo ***/
+	/* Make the content div have enough padding at the top so
+		the inner-content appears below the bootstrap nav bar */
+	.content {
+		margin: 0 75px;
+		padding: 50px 0 0 0;
+	}
+	</style>
+	<script src="demo/modernizr-2.6.2.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script src="js/jquery.easing.1.2.js"></script>
 
 	<script src="js/jquery.visualNav.js"></script>
 	<script>
 	$(function(){
-		$('#sidemenu').visualNav({
-			fitContent : true,
-			easing     : [ 'swing', 'easeInCirc' ] // x,y easing; if might be best to set one axis to swing [ 'swing', 'easeInCirc' ]
+		$('.navbar').visualNav({
+			selectedClass : 'active'
 		});
 	});
 	</script>
 
 </head>
-<body id="demo2">
+<body class="bootstrap">
 
-	<!-- menu with visualNav applied -->
-	<div id="sidemenu">
-		<ul>
-			<li><a href="#home">Home</a></li>
-			<li><a href="#work">Work</a></li>
-			<li><a href="#blog">Blog</a></li>
-			<li><a href="#projects">Projects</a></li>
-			<li><a href="#about">About</a></li>
-			<li><a href="#contact">Contact</a></li>
-			<li><hr><a class="external" href="index.html">Horizontal</a></li>
-			<li><a class="external" href="bootstrap.html">Bootstrap</a></li>
-		</ul>
-	</div>
+	<!--[if lt IE 7]>
+	<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+	<![endif]-->
+
+	<!-- Bootstrap menu with visualNav applied -->
+	<nav class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<ul class="nav">
+				<li class="active"><a href="#home">Home</a></li>
+				<li><a href="#work">Work</a></li>
+				<li><a href="#blog">Blog</a></li>
+				<li><a href="#projects">Projects</a></li>
+				<li><a href="#about">About</a></li>
+				<li><a href="#contact">Contact</a></li>
+
+				<li class="divider-vertical"></li>
+
+				<li><a class="external" href="index.html">Basic Demo</a></li>
+				<li><a class="external" href="index2.html">Horiz/Vert Demo</a></li>
+			</ul>
+		</div>
+	</nav>
 
 	<!-- main contents -->
+	<section>
 
-	<div id="home" class="content">
+	<article id="home" class="content">
 		<div class="inner-content">
-			<h2>Home</h2>
+			<header>
+				<h2>Home</h2>
+			</header>
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae sem nec urna interdum tempor vitae quis dolor. Nulla congue, turpis vitae dapibus gravida, purus turpis ornare nibh, sed ornare augue nulla ut mi. Maecenas ligula ante, fermentum ut imperdiet viverra, tristique in risus. Fusce interdum magna et felis aliquam pulvinar. <br>
 			<span class="right">
 				<img src="images/home.jpg" height="300" alt="scenery"><br>
@@ -49,13 +75,22 @@
 			<p>Suspendisse nec dui quam. Donec in nibh urna. Donec blandit consequat augue vitae sollicitudin. Nunc ultrices, urna sed cursus adipiscing, dolor elit blandit metus, at lacinia velit ante et nibh. Etiam eget erat felis. Sed ornare, tellus a aliquet dapibus, ante risus suscipit velit, et faucibus purus sem ut leo.</p>
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<nav class="links">
+				<a href="#home" class="visualNav">Home</a> |
+				<a href="#work" class="visualNav">Work</a> |
+				<a href="#blog" class="visualNav">Blog</a> |
+				<a href="#projects" class="visualNav">Projects</a> |
+				<a href="#about" class="visualNav">About</a> |
+				<a href="#contact" class="visualNav">Contact</a>
+			</nav>
 		</div>
-	</div>
+	</article>
 
-	<div id="work" class="content">
+	<article id="work" class="content">
 		<div class="inner-content">
-			<h2>Work</h2>
+			<header>
+				<h2>Work</h2>
+			</header>
 			<span class="left">
 				<img src="images/icon1.png" height="60" alt="suitcase">&nbsp;Donec iaculis, est nec feugiat tristique, elit nibh blandit elit, a malesuada sem mauris sit amet justo. Maecenas nisl libero, rhoncus eu sodales eget, viverra in urna. Cras in commodo felis. Curabitur dapibus tempus urna vitae fringilla. Nunc urna mi, iaculis id elementum et, placerat ut diam. Etiam tristique ligula vel arcu cursus rhoncus. Maecenas eget risus lobortis lacus aliquet condimentum.
 			</span>
@@ -68,13 +103,22 @@
 				<img src="images/icon3.png" height="60" alt="book">&nbsp;Donec iaculis, est nec feugiat tristique, elit nibh blandit elit, a malesuada sem mauris sit amet justo. Maecenas nisl libero, rhoncus eu sodales eget, viverra in urna. Cras in commodo felis. Curabitur dapibus tempus urna vitae fringilla. Nunc urna mi, iaculis id elementum et, placerat ut diam. Etiam tristique ligula vel arcu cursus rhoncus. Maecenas eget risus lobortis lacus aliquet condimentum.
 			</span>
 			<br><br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<nav class="links">
+				<a href="#home" class="visualNav">Home</a> |
+				<a href="#work" class="visualNav">Work</a> |
+				<a href="#blog" class="visualNav">Blog</a> |
+				<a href="#projects" class="visualNav">Projects</a> |
+				<a href="#about" class="visualNav">About</a> |
+				<a href="#contact" class="visualNav">Contact</a>
+			</nav>
 		</div>
-	</div>
+	</article>
 
-	<div id="blog" class="content">
+	<article id="blog" class="content">
 		<div class="inner-content">
-			<h2>Blog</h2>
+			<header>
+				<h2>Blog</h2>
+			</header>
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae sem nec urna interdum tempor vitae quis dolor. Nulla congue, turpis vitae dapibus gravida, purus turpis ornare nibh, sed ornare augue nulla ut mi. Maecenas ligula ante, fermentum ut imperdiet viverra, tristique in risus. Fusce interdum magna et felis aliquam pulvinar. <br>
 			<span class="right">
 				<img src="images/blog.jpg" height="200" alt="scenery"><br>
@@ -83,13 +127,22 @@
 			<p>Suspendisse nec dui quam. Donec in nibh urna. Donec blandit consequat augue vitae sollicitudin. Nunc ultrices, urna sed cursus adipiscing, dolor elit blandit metus, at lacinia velit ante et nibh. Etiam eget erat felis. Sed ornare, tellus a aliquet dapibus, ante risus suscipit velit, et faucibus purus sem ut leo.</p>
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<nav class="links">
+				<a href="#home" class="visualNav">Home</a> |
+				<a href="#work" class="visualNav">Work</a> |
+				<a href="#blog" class="visualNav">Blog</a> |
+				<a href="#projects" class="visualNav">Projects</a> |
+				<a href="#about" class="visualNav">About</a> |
+				<a href="#contact" class="visualNav">Contact</a>
+			</nav>
 		</div>
-	</div>
+	</article>
 
-	<div id="projects" class="content">
+	<article id="projects" class="content">
 		<div class="inner-content">
-			<h2>Projects</h2>
+			<header>
+				<h2>Projects</h2>
+			</header>
 			<ol>
 				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras blandit rhoncus purus at varius. Cras feugiat, ante ac lobortis aliquet, felis velit vestibulum quam, dignissim condimentum neque orci quis lorem. Cras sapien velit, commodo quis laoreet ut, facilisis vitae metus. Vivamus eget neque vel ligula hendrerit ullamcorper id semper diam.</li>
 				<li>Fusce luctus dolor eu felis malesuada nec pellentesque mauris dictum. In hac habitasse platea dictumst. Ut mollis dictum nulla, eget lobortis tortor vehicula eget. Pellentesque placerat commodo metus, at aliquet diam auctor mollis.</li>
@@ -102,26 +155,44 @@
 				<li>Quisque vitae dui tellus, convallis ullamcorper justo. Fusce vitae lectus purus, eget semper sapien. Nulla imperdiet tellus ut dolor ultrices ultrices nec egestas ipsum. Suspendisse ultricies, turpis a egestas posuere, libero ligula pretium nisl, ut auctor libero urna in tortor.</li>
 				<li>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</li>
 			</ol>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<nav class="links">
+				<a href="#home" class="visualNav">Home</a> |
+				<a href="#work" class="visualNav">Work</a> |
+				<a href="#blog" class="visualNav">Blog</a> |
+				<a href="#projects" class="visualNav">Projects</a> |
+				<a href="#about" class="visualNav">About</a> |
+				<a href="#contact" class="visualNav">Contact</a>
+			</nav>
 		</div>
-	</div>
+	</article>
 
-	<div id="about" class="content">
+	<article id="about" class="content">
 		<div class="inner-content">
-			<h2>About</h2>
+			<header>
+				<h2>About</h2>
+			</header>
 			Fusce molestie eros sed augue feugiat fermentum. Donec hendrerit varius nibh, non tincidunt erat condimentum eu. In et imperdiet est. Duis malesuada facilisis nunc quis congue. Donec nec enim et tellus pretium porta. Phasellus condimentum risus quis mauris faucibus nec adipiscing erat eleifend. Suspendisse urna arcu, rutrum sit amet pretium eu, posuere sed ligula. Aliquam vel tempor felis. Suspendisse potenti. Maecenas et augue at nisi eleifend aliquam. Quisque et diam leo, eget feugiat neque. Nulla viverra vehicula augue, luctus fringilla felis lacinia non. Nulla non sapien vel justo tempor pharetra.
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
-	
-			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
-			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
-		</div>
-	</div>
 
-	<div id="contact" class="content">
+			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
+			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
+			<nav class="links">
+				<a href="#home" class="visualNav">Home</a> |
+				<a href="#work" class="visualNav">Work</a> |
+				<a href="#blog" class="visualNav">Blog</a> |
+				<a href="#projects" class="visualNav">Projects</a> |
+				<a href="#about" class="visualNav">About</a> |
+				<a href="#contact" class="visualNav">Contact</a>
+			</nav>
+		</div>
+	</article>
+
+	<article id="contact" class="content">
 		<div class="inner-content">
-			<h2>Contact</h2>
+			<header>
+				<h2>Contact</h2>
+			</header>
 			<span class="left">
 				<img src="images/icon4.png" height="50" alt="phone"> Maecenas et augue at nisi eleifend aliquam: ipsum_nisl@dolor.com
 			</span>
@@ -138,15 +209,23 @@
 				<img src="images/icon2.png" height="50" alt="suitcase"> Donec iaculis, est nec feugiat tristique, elit nibh blandit elit, a malesuada sem mauris sit amet justo.
 			</span>
 			<br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<nav class="links">
+				<a href="#home" class="visualNav">Home</a> |
+				<a href="#work" class="visualNav">Work</a> |
+				<a href="#blog" class="visualNav">Blog</a> |
+				<a href="#projects" class="visualNav">Projects</a> |
+				<a href="#about" class="visualNav">About</a> |
+				<a href="#contact" class="visualNav">Contact</a>
+			</nav>
 		</div>
-	</div>
+	</article>
 
-<!-- end contents -->
+	</section>
+	<!-- end contents -->
 
-	<div id="footer">
+	<footer id="footer" class="content">
 		<p>Images & icons sources: www.freedigitalphotos.net & www.bestfreeicons.com</p>
-	</div>
+	</footer>
 
-</body>
+	</body>
 </html>

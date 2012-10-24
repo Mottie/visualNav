@@ -1,15 +1,13 @@
-/*
- * Visual Navigation (visualNav) v2.2
+/*!
+ * Visual Navigation (visualNav) v2.3
  * https://github.com/Mottie/visualNav/wiki
- *
- * Copyright (c) 2011 Rob Garrison (aka Mottie & Fudgey)
- * Dual licensed under the MIT and GPL licenses.
- *
+ * by Rob Garrison (Mottie)
+ * MIT licensed.
  */
-
-(function($){
+/*jshint jquery:true */
+;(function($){
+"use strict";
 $.visualNav = function(el, options){
-
 	// Access to jQuery and DOM versions of element
 	var o, base = this;
 	base.$el = $(el);
@@ -52,7 +50,7 @@ $.visualNav = function(el, options){
 
 		// Find specific menu links (this roundabout way is needed so ordinary links in the menu continue to work - like the link to other demo)
 		var links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-		base.$el.find(links)
+		base.$el.find(links).not('.' + o.externalLinks)
 			// add links inside the content - the links must have a "visualNav" class name
 			.add( $('.' + o.contentLinks) )
 			.click(function(){
@@ -167,6 +165,7 @@ $.visualNav.defaultOptions = {
 	selectedAppliedTo : 'li',        // to only apply to the link, use the same value as is in the link option.
 	contentClass      : 'content',   // content class to get height of the section.
 	contentLinks      : 'visualNav', // class name of links inside the content that act like the visualNav menu (smooth scroll).
+	externalLinks     : 'external',  // class name of links that link to external content.
 	useHash           : true,        // if true, the location hash will be updated
 
 	// Classes added to items

@@ -1,16 +1,17 @@
 /*** CSS for Default visualNav HTML ***/
 /* side menu with visualNav */
-#sidemenu             { text-align: center; position: fixed; top: 50px; left: 20px; background: #444; width: 120px; z-index: 10; padding: 1px 1px 5px 1px; }
+#sidemenu             { text-align: center; position: fixed; top: 20px; left: 20px; background: #444; width: 120px; z-index: 10; padding: 1px 1px 5px 1px; }
 #sidemenu ul          { list-style-type: none; margin: 0; padding: 0; }
 #sidemenu li          { margin: 5px; padding: 5px; width: 100px; text-align: center; border: transparent 1px solid; }
 #sidemenu a           { text-decoration: none; color: #bbbbff; }
 #sidemenu a:hover     { color: #fff; }
 
-#sidemenu li.selected { background: #555; }
-#sidemenu li.inView   { border-color: #111; }
+#sidemenu .selected   { background: #555; }
+#sidemenu .inView     { border-color: #111; }
 
 /* main content header & wrapper */
-.content              { min-width: 500px; background: #363636; border: #555 1px solid; margin: 10px 75px 50px 175px; padding: 10px 20px; }
+.content           { min-width: 500px; margin: 10px 75px 10px 175px; padding: 10px; }
+.inner-content     { background: #363636; border: #555 1px solid; padding: 10px 20px; }
 
 /*** Demo ***/
 body               { background: #333; color: #ddd; }
@@ -35,5 +36,5 @@ body#demo2         { width: 3500px; }
 .left p            { padding-left: 5px; }
 
 /* footer */
-#footer            { height: 50px; padding: 10px; background: #444; text-align: center; font-size: 0.8em; clear: both; }
+#footer            { height: 50px; padding: 10px; margin-top: 20px; background: #444; text-align: center; font-size: 0.8em; clear: both; }
 .spacer            { height: 100px; }
