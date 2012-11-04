@@ -64,6 +64,11 @@ $.visualNav = function(el, options){
 		base.$win
 			.scroll(function(){ base.throttle(); })
 			.resize(function(){ base.throttle(); });
+
+		// initialized
+		if (typeof o.initialized === 'function') {
+			o.initialized(base, 
+		}
 	};
 
 	base.animate = function(sel){
@@ -182,6 +187,7 @@ $.visualNav.defaultOptions = {
 	stopOnInteraction : true,        // if the user presses any key or scrolls the mouse, the animation will cancel
 
 	// Callbacks
+	initialized       : null,        // Callback executed when the visualNav plugin has finished initializing
 	beforeAnimation   : null,        // Callback executed before the animation begins moving to the targetted element
 	complete          : null         // Callback executed when the targetted element is in view and scrolling animation has completed
 };
