@@ -43,7 +43,7 @@ $.visualNav = function(el, options){
 
 		// Stop animated scroll if the user does something
 		base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
-			if ( e.which > 0 || e.type === 'mousedown' || e.type === 'mousewheel' ){
+			if ( o.stopOnInteraction && ( e.which > 0 || e.type === 'mousedown' || e.type === 'mousewheel' ) ){
 				base.$body.stop();
 			}
 		});
@@ -179,6 +179,7 @@ $.visualNav.defaultOptions = {
 	// Animation
 	animationTime     : 1200,                 // time in milliseconds.
 	easing            : [ 'swing', 'swing' ], // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
+	stopOnInteraction : true,        // if the user presses any key or scrolls the mouse, the animation will cancel
 
 	// Callbacks
 	beforeAnimation   : null,        // Callback executed before the animation begins moving to the targetted element
