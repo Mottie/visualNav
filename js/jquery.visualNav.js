@@ -92,6 +92,9 @@ $.visualNav = function(el, options){
 					},
 					complete      : function(){
 						if (o.useHash) { base.win.location.hash = $sel[0].id; }
+						// current content class
+						$('.' + o.contentClass).removeClass(o.currentContent);
+						$sel.addClass(o.currentContent);
 						// callback when animation has completed
 						if (typeof o.complete === 'function') {
 							o.complete(base, $sel);
@@ -176,6 +179,7 @@ $.visualNav.defaultOptions = {
 	// Classes added to items
 	inViewClass       : 'inView',    // css class added to items in the viewport.
 	selectedClass     : 'selected',  // css class applied to menu when a link is selected (highlighted).
+	currentContent    : 'current',   // css class applied to the content block when it is currently selected in the menu
 
 	// Appearance
 	bottomMargin      : 100,         // Margin from the end of the page where the last menu item is used (in case the target is short).
