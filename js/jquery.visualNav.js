@@ -15,33 +15,35 @@ $.visualNav = function(el, options){
 	// Add a reverse reference to the DOM object
 	base.$el.data("visualNav", base);
 
-	// Cached objects
-	base.win = window;
-	base.$win = $(base.win);
-	base.$doc = $(document);
-	// Opera scrolling fix - http://www.zachstronaut.com/posts/2009/01/18/jquery-smooth-scroll-bugs.html
-	var scrollElement = 'html, body';
-	$('html, body').each(function(){
-		var initScrollTop = $(this).attr('scrollTop');
-		$(this).attr('scrollTop', initScrollTop + 1);
-		if ($(this).attr('scrollTop') === initScrollTop + 1) {
-			scrollElement = this.nodeName.toLowerCase();
-			$(this).attr('scrollTop', initScrollTop);
-			return false;
-		}
-	});
-	base.$body = $(scrollElement);
-
 	base.init = function(){
 		base.initialized = false;
 		base.options = o = $.extend({}, $.visualNav.defaultOptions, options);
-		base.$content = $('.' + o.contentClass);
-		base.leftMargin = parseInt( base.$content.css('margin-left'), 10);
-		base.rightMargin = parseInt( base.$content.css('margin-right'), 10);
-		base.$lastMenu = [ null ];
+
+		// Cached objects
+		base.win = window;
+		base.$win = $(base.win);
+		base.$doc = $(document);
+		// Opera scrolling fix - http://www.zachstronaut.com/posts/2009/01/18/jquery-smooth-scroll-bugs.html
+		var sel, scrollElement = 'html, body';
+		$('html, body').each(function(){
+			var initScrollTop = $(this).attr('scrollTop');
+			$(this).attr('scrollTop', initScrollTop + 1);
+			if ($(this).attr('scrollTop') === initScrollTop + 1) {
+				scrollElement = this.nodeName.toLowerCase();
+				$(this).attr('scrollTop', initScrollTop);
+				return false;
+			}
+		});
+		base.$body = $(scrollElement);
+
+		base.$lastItem = [ null ];
 
 		// check easing
-		if (!$.isFunction($.easing[o.easing[0]])) { o.easing = ['swing', 'swing']; }
+		$.each(o.easing, function(i,v){
+			if (!$.isFunction($.easing[v])) {
+				o.easing[i] = 'swing';
+			}
+		});
 
 		// Stop animated scroll if the user does something
 		base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
@@ -50,22 +52,12 @@ $.visualNav = function(el, options){
 			}
 		});
 
-		// Find specific menu links (this roundabout way is needed so ordinary links in the menu continue to work - like the link to other demo)
-		var links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-		base.$el.find(links).not('.' + o.externalLinks)
-			// add links inside the content - the links must have a "visualNav" class name
-			.add( $('.' + o.contentLinks) )
-			.click(function(){
-				// contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
-				// just in case the o.link isn't an <a>
-				var att = (this.tagName === "A") ? 'href' : o.targetAttr;
-				base.animate($(this).attr(att));
-				return false;
-			});
 		// Adjust side menu on scroll and resize
-		base.$win
-			.scroll(function(){ base.throttle(); })
-			.resize(function(){ base.throttle(); });
+		base.$win.bind('scroll resize', function(){
+			base.throttle();
+		});
+
+		base.update();
 
 		// go to hash on page load
 		if (o.useHash && base.win.location.hash) {
@@ -75,23 +67,49 @@ $.visualNav = function(el, options){
 		// update menu
 		base.findLocation();
 
-		// update content
+		// update content class & hash
 		if (base.win.location.hash === '') {
-			links = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-			// ultimately calls base.animate function to update content class & hash
-			base.$el.find(links).trigger('click');
+			sel = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
+			base.$el.find(sel).trigger('click.visualNav');
 		}
 
+	};
+
+	base.update = function(){
+		base.$content = $('.' + o.contentClass);
+		base.leftMargin = parseInt( base.$content.css('margin-left'), 10);
+		base.rightMargin = parseInt( base.$content.css('margin-right'), 10);
+
+		base.$items = base.$el.find(o.selectedAppliedTo).not(':has(.' + o.externalLinks + ')');
+
+		// Find specific menu links (this roundabout way is needed so ordinary links in the menu continue to work - like the links to other demos)
+		var links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
+		base.$links = base.$el.find(links).not('.' + o.externalLinks)
+			// add links inside the content - the links must have a "visualNav" class name
+			.add( $('.' + o.contentLinks) )
+			// make them clickable
+			.unbind('click.visualNav')
+			.bind('click.visualNav', function(){
+				// contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
+				// just in case the o.link isn't an <a>
+				var att = (this.tagName === "A") ? 'href' : o.targetAttr;
+				base.animate($(this).attr(att));
+				return false;
+			});
+
+		if (base.initialized) {
+			base.findLocation();
+		}
 	};
 
 	base.animate = function(sel){
 		if (sel !== '#' && $(sel).length) { // ignore non-existant targets & solitary '#'
 			var $sel = $(sel).eq(0).closest('.' + o.contentClass);
 			if ($sel.length) {
-				base.$curHash = sel;
+				base.curHash = sel;
 				// callback before animation
 				if (base.initialized && typeof o.beforeAnimation === 'function') {
-					o.beforeAnimation(base, $sel, base.$curMenu);
+					o.beforeAnimation( base, $sel );
 				}
 				// get content top or top position if at the document bottom, then animate
 				base.$body.stop().animate({
@@ -100,6 +118,7 @@ $.visualNav = function(el, options){
 				},{
 					queue         : false,
 					duration      : base.initialized ? o.animationTime : 0,
+					easing        : o.easing[0],
 					specialEasing : {
 						scrollLeft  : o.easing[0] || 'swing',
 						scrollTop   : o.easing[1] || o.easing[0] || 'swing'
@@ -107,7 +126,6 @@ $.visualNav = function(el, options){
 					complete      : function(){
 						base.completed();
 					}
-
 				});
 			}
 		}
@@ -124,18 +142,18 @@ $.visualNav = function(el, options){
 	};
 
 	base.completed = function(){
-		if (o.useHash) { base.win.location.hash = base.$curHash; }
+		if (o.useHash) { base.win.location.hash = base.curHash; }
 
 		// callbacks
 		if (base.initialized) {
 			// callback when animation has completed
 			if (typeof o.complete === 'function') {
-				o.complete(base, $sel, base.$curMenu);
+				o.complete( base, $sel );
 			}
 		} else {
 			if (typeof o.initialized === 'function') {
 				// callback( visNavObject, current content, current menu item )
-				o.initialized( base, $sel, base.$curMenu );
+				o.initialized( base, $sel );
 			}
 			// complete initialization
 			base.initialized = true;
@@ -148,19 +166,19 @@ $.visualNav = function(el, options){
 	// Update menu
 	base.findLocation = function(){
 		var tar, locLeft, locTop, sel, elBottom, elHeight, elWidth, elRight,
-		winWidth = base.$win.width(),
-		winLeft = base.$win.scrollLeft(),
-		winTop = base.$win.scrollTop(),
-		winRight = winLeft + winWidth,
-		winBottom = winTop + base.$win.height(),
-		docHeight = base.$doc.height(),
-		el = base.$el.find(o.selectedAppliedTo).removeClass(o.inViewClass);
+			winWidth = base.$win.width(),
+			winLeft = base.$win.scrollLeft(),
+			winTop = base.$win.scrollTop(),
+			winRight = winLeft + winWidth,
+			winBottom = winTop + base.$win.height(),
+			docHeight = base.$doc.height();
+		base.$items.removeClass(o.inViewClass);
 		// Make content fit on screen
 		if (o.fitContent) {
 			base.$content.width( winWidth - base.leftMargin - base.rightMargin );
 		}
 		// cycling through each link during the scroll may be slow on some computers/browsers
-		base.$el.find(o.link).each(function(i){
+		base.$links.each(function(i){
 			sel = $(this).attr(o.targetAttr);
 			tar = (sel === "#" || sel.length <= 1) ? '' : $(sel); // ignore links that don't point anywhere
 			if (tar.length) {
@@ -173,18 +191,18 @@ $.visualNav = function(el, options){
 				// in view class
 				if ( locTop < winBottom && ( locTop + elHeight - o.bottomMargin > winTop || elBottom > winBottom ) &&
 				locLeft < winRight && ( locLeft + elWidth - o.bottomMargin > winLeft || elRight > winRight ) ) {
-					el.eq(i).addClass(o.inViewClass);
+					base.$items.eq(i).addClass(o.inViewClass);
 				}
 			}
 		});
 		// add selected class. If at the document end, select the last element
 		sel = ( winBottom + o.bottomMargin >= docHeight ) ? ':last' : ':first';
-		el.removeClass(o.selectedClass);
-		base.$curMenu = el.filter('.' + o.inViewClass + sel).addClass(o.selectedClass);
+		base.$items.removeClass(o.selectedClass);
+		base.$curItem = base.$items.filter('.' + o.inViewClass + sel).addClass(o.selectedClass);
 
 		// update current content class while scrolling
-		if (base.$curMenu[0] !== base.$lastMenu[0]) {
-			base.$lastMenu = base.$curMenu;
+		if (base.$curItem[0] !== base.$lastItem[0]) {
+			base.$lastItem = base.$curItem;
 			base.$content.removeClass(o.currentContent);
 			sel = $('.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link)).attr(o.targetAttr);
 			base.$curContent = $(sel)
@@ -203,24 +221,24 @@ $.visualNav.defaultOptions = {
 	// use link & targetAttr in case you want to use <div class="link" data-target="#Home">Home</div>
 	// the link = "div.link" and targetAttr = "data-target"
 	link              : 'a',         // Add a link class, as necessary.
-	targetAttr        : 'href',      // added in case you have link = "div" and attribute something like.
+	targetAttr        : 'href',      // added in case you have link = "div" and attribute something like data-target.
 	selectedAppliedTo : 'li',        // to only apply to the link, use the same value as is in the link option.
 	contentClass      : 'content',   // content class to get height of the section.
 	contentLinks      : 'visualNav', // class name of links inside the content that act like the visualNav menu (smooth scroll).
 	externalLinks     : 'external',  // class name of links that link to external content.
-	useHash           : true,        // if true, the location hash will be updated
+	useHash           : true,        // if true, the location hash will be updated.
 
 	// Classes added to items
 	inViewClass       : 'inView',    // css class added to items in the viewport.
 	selectedClass     : 'selected',  // css class applied to menu when a link is selected (highlighted).
-	currentContent    : 'current',   // css class applied to the content block when it is currently selected in the menu
+	currentContent    : 'current',   // css class applied to the content block when it is currently selected in the menu.
 
 	// Appearance
 	bottomMargin      : 100,         // Margin from the end of the page where the last menu item is used (in case the target is short).
 	fitContent        : false,       // If true, the contentClass width will be adjusted to fit the browser window (for horizontal pages).
 
 	// Animation
-	animationTime     : 1200,                 // time in milliseconds.
+	animationTime     : 1200,                 // page scrolling time in milliseconds.
 	easing            : [ 'swing', 'swing' ], // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
 	stopOnInteraction : true,        // if the user presses any key or scrolls the mouse, the animation will cancel
 
@@ -233,13 +251,17 @@ $.visualNav.defaultOptions = {
 $.fn.visualNav = function(options){
 	return this.each(function(){
 		var nav = $(this).data('visualNav');
-		// string provided, check if it's an ID or class
-		if (typeof options === "string" && /^(#|\.)/.test(options)) {
+		// initialize visualNav but prevent multiple initializations
+		if ((typeof(options)).match('object|undefined')){
+			if (!nav) {
+				(new $.visualNav(this, options));
+			} else {
+				nav.update();
+			}
+		} else if (typeof options === "string" && /^(#|\.)/.test(options)) {
+			// string provided, check if it's an ID or class
 			nav.animate(options);
 		}
-		// don't allow multiple instances
-		if (nav) { return; }
-		(new $.visualNav(this, options));
 	});
 };
 
