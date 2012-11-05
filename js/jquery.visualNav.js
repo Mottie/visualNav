@@ -1,5 +1,5 @@
 /*!
- * Visual Navigation (visualNav) v2.3
+ * Visual Navigation (visualNav) v2.4
  * https://github.com/Mottie/visualNav/wiki
  * by Rob Garrison (Mottie)
  * MIT licensed.
@@ -33,10 +33,12 @@ $.visualNav = function(el, options){
 	base.$body = $(scrollElement);
 
 	base.init = function(){
+		base.initialized = false;
 		base.options = o = $.extend({}, $.visualNav.defaultOptions, options);
-		base.content = $('.' + o.contentClass);
-		base.leftMargin = parseInt( base.content.css('margin-left'), 10);
-		base.rightMargin = parseInt( base.content.css('margin-right'), 10);
+		base.$content = $('.' + o.contentClass);
+		base.leftMargin = parseInt( base.$content.css('margin-left'), 10);
+		base.rightMargin = parseInt( base.$content.css('margin-right'), 10);
+		base.$lastMenu = [ null ];
 
 		// check easing
 		if (!$.isFunction($.easing[o.easing[0]])) { o.easing = ['swing', 'swing']; }
@@ -65,19 +67,31 @@ $.visualNav = function(el, options){
 			.scroll(function(){ base.throttle(); })
 			.resize(function(){ base.throttle(); });
 
-		// initialized
-		if (typeof o.initialized === 'function') {
-			o.initialized(base, 
+		// go to hash on page load
+		if (o.useHash && base.win.location.hash) {
+			base.animate(base.win.location.hash);
 		}
+
+		// update menu
+		base.findLocation();
+
+		// update content
+		if (base.win.location.hash === '') {
+			links = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
+			// ultimately calls base.animate function to update content class & hash
+			base.$el.find(links).trigger('click');
+		}
+
 	};
 
 	base.animate = function(sel){
 		if (sel !== '#' && $(sel).length) { // ignore non-existant targets & solitary '#'
 			var $sel = $(sel).eq(0).closest('.' + o.contentClass);
 			if ($sel.length) {
+				base.$curHash = sel;
 				// callback before animation
-				if (typeof o.beforeAnimation === 'function') {
-					o.beforeAnimation(base, $sel);
+				if (base.initialized && typeof o.beforeAnimation === 'function') {
+					o.beforeAnimation(base, $sel, base.$curMenu);
 				}
 				// get content top or top position if at the document bottom, then animate
 				base.$body.stop().animate({
@@ -85,23 +99,15 @@ $.visualNav = function(el, options){
 					scrollTop  : Math.min( $sel.offset().top, base.$doc.height() - base.$win.height() )
 				},{
 					queue         : false,
-					duration      : o.animationTime,
+					duration      : base.initialized ? o.animationTime : 0,
 					specialEasing : {
 						scrollLeft  : o.easing[0] || 'swing',
 						scrollTop   : o.easing[1] || o.easing[0] || 'swing'
 					},
 					complete      : function(){
-						if (o.useHash) { base.win.location.hash = $sel[0].id; }
-						// current content class
-						$('.' + o.contentClass).removeClass(o.currentContent);
-						$sel.addClass(o.currentContent);
-						// callback when animation has completed
-						if (typeof o.complete === 'function') {
-							o.complete(base, $sel);
-						}
-						// clear throttle flag, just in case
-						base.flag = false;
+						base.completed();
 					}
+
 				});
 			}
 		}
@@ -110,10 +116,33 @@ $.visualNav = function(el, options){
 	base.throttle = function(){
 		if (base.flag) { return; }
 		base.flag = true;
-		base.findLocation();
 		base.timer = setTimeout(function(){
 			base.flag = false;
-		}, 50);
+			// find current menu item after the set time; works better with super fast scrolling
+			base.findLocation();
+		}, 100);
+	};
+
+	base.completed = function(){
+		if (o.useHash) { base.win.location.hash = base.$curHash; }
+
+		// callbacks
+		if (base.initialized) {
+			// callback when animation has completed
+			if (typeof o.complete === 'function') {
+				o.complete(base, $sel, base.$curMenu);
+			}
+		} else {
+			if (typeof o.initialized === 'function') {
+				// callback( visNavObject, current content, current menu item )
+				o.initialized( base, $sel, base.$curMenu );
+			}
+			// complete initialization
+			base.initialized = true;
+		}
+
+		// clear throttle flag, just in case
+		base.flag = false;
 	};
 
 	// Update menu
@@ -128,7 +157,7 @@ $.visualNav = function(el, options){
 		el = base.$el.find(o.selectedAppliedTo).removeClass(o.inViewClass);
 		// Make content fit on screen
 		if (o.fitContent) {
-			base.content.width( winWidth - base.leftMargin - base.rightMargin );
+			base.$content.width( winWidth - base.leftMargin - base.rightMargin );
 		}
 		// cycling through each link during the scroll may be slow on some computers/browsers
 		base.$el.find(o.link).each(function(i){
@@ -151,18 +180,23 @@ $.visualNav = function(el, options){
 		// add selected class. If at the document end, select the last element
 		sel = ( winBottom + o.bottomMargin >= docHeight ) ? ':last' : ':first';
 		el.removeClass(o.selectedClass);
-		el.filter('.' + o.inViewClass + sel).addClass(o.selectedClass);
+		base.$curMenu = el.filter('.' + o.inViewClass + sel).addClass(o.selectedClass);
+
+		// update current content class while scrolling
+		if (base.$curMenu[0] !== base.$lastMenu[0]) {
+			base.$lastMenu = base.$curMenu;
+			base.$content.removeClass(o.currentContent);
+			sel = $('.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link)).attr(o.targetAttr);
+			base.$curContent = $(sel)
+				.closest('.' + o.contentClass)
+				.addClass(o.currentContent);
+		}
+
 	};
 
 	// Run initializer
 	base.init();
-	// go to hash on page load
-	if (o.useHash && base.win.location.hash) {
-		setTimeout(function(){
-			base.animate(base.win.location.hash);
-		}, o.animationTime/2);
-	}
-	base.findLocation();
+
 };
 
 $.visualNav.defaultOptions = {
