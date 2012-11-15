@@ -26,11 +26,11 @@ $.visualNav = function(el, options){
 		// Opera scrolling fix - http://www.zachstronaut.com/posts/2009/01/18/jquery-smooth-scroll-bugs.html
 		var sel, scrollElement = 'html, body';
 		$('html, body').each(function(){
-			var initScrollTop = $(this).attr('scrollTop');
-			$(this).attr('scrollTop', initScrollTop + 1);
-			if ($(this).attr('scrollTop') === initScrollTop + 1) {
+			var initScrollTop = $(this).scrollTop();
+			$(this).scrollTop(initScrollTop + 1);
+			if ($(this).scrollTop() === initScrollTop + 1) {
 				scrollElement = this.nodeName.toLowerCase();
-				$(this).attr('scrollTop', initScrollTop);
+				$(this).scrollTop(initScrollTop);
 				return false;
 			}
 		});
@@ -46,11 +46,13 @@ $.visualNav = function(el, options){
 		});
 
 		// Stop animated scroll if the user does something
-		base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
-			if ( o.stopOnInteraction && ( e.which > 0 || e.type === 'mousedown' || e.type === 'mousewheel' ) ){
-				base.$body.stop();
-			}
-		});
+		if (o.stopOnInteraction) {
+			base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
+				if (e.which > 0 || e.type === 'mousedown' || e.type === 'mousewheel'){
+					base.$body.stop();
+				}
+			});
+		}
 
 		// Adjust side menu on scroll and resize
 		base.$win.bind('scroll resize', function(){
@@ -68,10 +70,9 @@ $.visualNav = function(el, options){
 		base.findLocation();
 
 		// update content class & hash
-		if (base.win.location.hash === '') {
-			sel = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-			base.$el.find(sel).trigger('click.visualNav');
-		}
+		sel = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
+		// send true flag to signal initialization complete
+		base.$el.find(sel).trigger('click.visualNav', true);
 
 	};
 
@@ -80,33 +81,35 @@ $.visualNav = function(el, options){
 		base.leftMargin = parseInt( base.$content.css('margin-left'), 10);
 		base.rightMargin = parseInt( base.$content.css('margin-right'), 10);
 
-		base.$items = base.$el.find(o.selectedAppliedTo).not(':has(.' + o.externalLinks + ')');
-
 		// Find specific menu links (this roundabout way is needed so ordinary links in the menu continue to work - like the links to other demos)
 		var links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-		base.$links = base.$el.find(links).not('.' + o.externalLinks)
+		base.$links = base.$el.find(links).not('.' + o.externalLinks);
 			// add links inside the content - the links must have a "visualNav" class name
-			.add( $('.' + o.contentLinks) )
+		base.$links.add( $('.' + o.contentLinks) )
 			// make them clickable
 			.unbind('click.visualNav')
-			.bind('click.visualNav', function(){
+			.bind('click.visualNav', function(e, flag){
 				// contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
 				// just in case the o.link isn't an <a>
 				var att = (this.tagName === "A") ? 'href' : o.targetAttr;
-				base.animate($(this).attr(att));
+				base.animate($(this).attr(att), flag);
 				return false;
 			});
+		// find items (li's) based on links (a's)
+		base.$items = (o.selectedAppliedTo === o.link) ? base.$links :
+			$( base.$links.map(function(){ return $(this).closest(o.selectedAppliedTo)[0]; }) );
 
 		if (base.initialized) {
 			base.findLocation();
 		}
 	};
 
-	base.animate = function(sel){
+	base.animate = function(sel, flag){
 		if (sel !== '#' && $(sel).length) { // ignore non-existant targets & solitary '#'
 			var $sel = $(sel).eq(0).closest('.' + o.contentClass);
 			if ($sel.length) {
-				base.curHash = sel;
+				base.curHash = $sel[0].id || '';
+				base.$curContent = $sel;
 				// callback before animation
 				if (base.initialized && typeof o.beforeAnimation === 'function') {
 					o.beforeAnimation( base, $sel );
@@ -118,13 +121,13 @@ $.visualNav = function(el, options){
 				},{
 					queue         : false,
 					duration      : base.initialized ? o.animationTime : 0,
-					easing        : o.easing[0],
+					easing        : o.easing[0], // added in case jQuery older than 1.4 is used
 					specialEasing : {
 						scrollLeft  : o.easing[0] || 'swing',
 						scrollTop   : o.easing[1] || o.easing[0] || 'swing'
 					},
 					complete      : function(){
-						base.completed();
+						base.completed(flag);
 					}
 				});
 			}
@@ -141,19 +144,20 @@ $.visualNav = function(el, options){
 		}, 100);
 	};
 
-	base.completed = function(){
+	// flag is needed for initialization
+	base.completed = function(flag){
 		if (o.useHash) { base.win.location.hash = base.curHash; }
 
 		// callbacks
 		if (base.initialized) {
 			// callback when animation has completed
 			if (typeof o.complete === 'function') {
-				o.complete( base, $sel );
+				o.complete( base, base.$curContent );
 			}
-		} else {
+		} else if (flag) {
 			if (typeof o.initialized === 'function') {
 				// callback( visNavObject, current content, current menu item )
-				o.initialized( base, $sel );
+				o.initialized( base, base.$curContent );
 			}
 			// complete initialization
 			base.initialized = true;
