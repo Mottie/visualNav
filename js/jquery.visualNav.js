@@ -212,6 +212,9 @@ $.visualNav = function(el, options){
 			base.$curContent = $(sel)
 				.closest('.' + o.contentClass)
 				.addClass(o.currentContent);
+			if (typeof o.changed === 'function') {
+				o.changed( base, base.$curContent );
+			}
 		}
 
 	};
@@ -249,7 +252,8 @@ $.visualNav.defaultOptions = {
 	// Callbacks
 	initialized       : null,        // Callback executed when the visualNav plugin has finished initializing
 	beforeAnimation   : null,        // Callback executed before the animation begins moving to the targetted element
-	complete          : null         // Callback executed when the targetted element is in view and scrolling animation has completed
+	complete          : null,        // Callback executed when the targetted element is in view and scrolling animation has completed
+	changed           : null         // Callback executed every time the current menu item changes
 };
 
 $.fn.visualNav = function(options){
