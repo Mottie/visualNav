@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>visualNav Horizontal demo</title>
+	<title>visualNav Vertical demo</title>
 
 	<link rel="stylesheet" href="css/demo.css">
 
@@ -12,7 +12,12 @@
 	<script src="js/jquery.visualNav.js"></script>
 	<script>
 	$(function(){
-		$('#sidemenu').visualNav();
+		$('#sidemenu').visualNav({
+			// initialized     : function(){ console.log('init'); },
+			// beforeAnimation : function(){ console.log('beforeAnim'); },
+			// complete        : function(){ console.log('complete'); },
+			// changed         : function(){ console.log('changed'); }
+		});
 	});
 	</script>
 
@@ -28,8 +33,17 @@
 			<li><a href="#projects">Projects</a></li>
 			<li><a href="#about">About</a></li>
 			<li><a href="#contact">Contact</a></li>
-			<li><hr><a class="external" href="index2.html">Horiz/Vert</a></li>
-			<li><a class="external" href="bootstrap.html">Bootstrap</a></li>
+
+			<li class="external"><hr><a href="https://github.com/Mottie/visualNav">Github</a></li>
+			<li class="external"><a href="https://github.com/Mottie/visualNav/downloads">Download</a></li>
+			<li class="external">
+				Demos:<br>
+				<a class="current" href="index.html" title="Vertical">V</a> |
+				<a href="horizontal.html" title="Horizontal">H</a> |
+				<a href="horiz-vert.html" title="Horizontal/Vertical">H/V</a><br>
+				<a href="stepper.html" title="Section stepper">Step</a> |
+				<a href="bootstrap.html" title="Twitter Bootstrap">Boot</a>
+			</li>
 		</ul>
 	</div>
 
@@ -46,7 +60,9 @@
 			<p>Suspendisse nec dui quam. Donec in nibh urna. Donec blandit consequat augue vitae sollicitudin. Nunc ultrices, urna sed cursus adipiscing, dolor elit blandit metus, at lacinia velit ante et nibh. Etiam eget erat felis. Sed ornare, tellus a aliquet dapibus, ante risus suscipit velit, et faucibus purus sem ut leo.</p>
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<div class="visualNav">
+				<a href="#home">Home</a> | <a href="#work">Work</a> | <a href="#blog">Blog</a> | <a href="#projects">Projects</a> | <a href="#about">About</a> |  <a href="#contact">Contact</a>
+			</div>
 		</div>
 	</div>
 
@@ -65,7 +81,9 @@
 				<img src="images/icon3.png" height="60" alt="book">&nbsp;Donec iaculis, est nec feugiat tristique, elit nibh blandit elit, a malesuada sem mauris sit amet justo. Maecenas nisl libero, rhoncus eu sodales eget, viverra in urna. Cras in commodo felis. Curabitur dapibus tempus urna vitae fringilla. Nunc urna mi, iaculis id elementum et, placerat ut diam. Etiam tristique ligula vel arcu cursus rhoncus. Maecenas eget risus lobortis lacus aliquet condimentum.
 			</span>
 			<br><br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<div class="visualNav">
+				<a href="#home">Home</a> | <a href="#work">Work</a> | <a href="#blog">Blog</a> | <a href="#projects">Projects</a> | <a href="#about">About</a> |  <a href="#contact">Contact</a>
+			</div>
 		</div>
 	</div>
 
@@ -80,7 +98,9 @@
 			<p>Suspendisse nec dui quam. Donec in nibh urna. Donec blandit consequat augue vitae sollicitudin. Nunc ultrices, urna sed cursus adipiscing, dolor elit blandit metus, at lacinia velit ante et nibh. Etiam eget erat felis. Sed ornare, tellus a aliquet dapibus, ante risus suscipit velit, et faucibus purus sem ut leo.</p>
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<div class="visualNav">
+				<a href="#home">Home</a> | <a href="#work">Work</a> | <a href="#blog">Blog</a> | <a href="#projects">Projects</a> | <a href="#about">About</a> |  <a href="#contact">Contact</a>
+			</div>
 		</div>
 	</div>
 
@@ -99,7 +119,9 @@
 				<li>Quisque vitae dui tellus, convallis ullamcorper justo. Fusce vitae lectus purus, eget semper sapien. Nulla imperdiet tellus ut dolor ultrices ultrices nec egestas ipsum. Suspendisse ultricies, turpis a egestas posuere, libero ligula pretium nisl, ut auctor libero urna in tortor.</li>
 				<li>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</li>
 			</ol>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<div class="visualNav">
+				<a href="#home">Home</a> | <a href="#work">Work</a> | <a href="#blog">Blog</a> | <a href="#projects">Projects</a> | <a href="#about">About</a> |  <a href="#contact">Contact</a>
+			</div>
 		</div>
 	</div>
 
@@ -109,10 +131,11 @@
 			Fusce molestie eros sed augue feugiat fermentum. Donec hendrerit varius nibh, non tincidunt erat condimentum eu. In et imperdiet est. Duis malesuada facilisis nunc quis congue. Donec nec enim et tellus pretium porta. Phasellus condimentum risus quis mauris faucibus nec adipiscing erat eleifend. Suspendisse urna arcu, rutrum sit amet pretium eu, posuere sed ligula. Aliquam vel tempor felis. Suspendisse potenti. Maecenas et augue at nisi eleifend aliquam. Quisque et diam leo, eget feugiat neque. Nulla viverra vehicula augue, luctus fringilla felis lacinia non. Nulla non sapien vel justo tempor pharetra.
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
-	
 			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
 			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<div class="visualNav">
+				<a href="#home">Home</a> | <a href="#work">Work</a> | <a href="#blog">Blog</a> | <a href="#projects">Projects</a> | <a href="#about">About</a> |  <a href="#contact">Contact</a>
+			</div>
 		</div>
 	</div>
 
@@ -135,7 +158,9 @@
 				<img src="images/icon2.png" height="50" alt="suitcase"> Donec iaculis, est nec feugiat tristique, elit nibh blandit elit, a malesuada sem mauris sit amet justo.
 			</span>
 			<br>
-			<div class="links"><a href="#home" class="visualNav">Home</a> | <a href="#work" class="visualNav">Work</a> | <a href="#blog" class="visualNav">Blog</a> | <a href="#projects" class="visualNav">Projects</a> | <a href="#about" class="visualNav">About</a> |  <a href="#contact" class="visualNav">Contact</a></div>
+			<div class="visualNav">
+				<a href="#home">Home</a> | <a href="#work">Work</a> | <a href="#blog">Blog</a> | <a href="#projects">Projects</a> | <a href="#about">About</a> |  <a href="#contact">Contact</a>
+			</div>
 		</div>
 	</div>
 

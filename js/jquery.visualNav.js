@@ -81,18 +81,26 @@ $.visualNav = function(el, options){
 		base.leftMargin = parseInt( base.$content.css('margin-left'), 10);
 		base.rightMargin = parseInt( base.$content.css('margin-right'), 10);
 
-		// Find specific menu links (this roundabout way is needed so ordinary links in the menu continue to work - like the links to other demos)
-		var links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-		base.$links = base.$el.find(links).not('.' + o.externalLinks);
-			// add links inside the content - the links must have a "visualNav" class name
-		base.$links.add( $('.' + o.contentLinks) )
+		// Find specific menu links (this roundabout way is needed so ordinary links in the menu continue
+		// to work - like the links to other demos)
+		var $l,
+			links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link),
+			l = '.' + o.externalLinks;
+		// find links that don't have the externalLinks class nor contained within an externalLinks container
+		base.$links = $( base.$el.find(links).map(function(i,el){
+			$l = $(el);
+			return (!$l.hasClass(l) && !$l.closest(l).length) ? el : null;
+		}) );
+		l = '.' + o.contentLinks;
+		// add links inside the content - the links must have a "visualNav" class name,
+		// or be within a container of class "visualNav"
+		base.$links.add( $(l + ',' + l + ' a') )
 			// make them clickable
 			.unbind('click.visualNav')
 			.bind('click.visualNav', function(e, flag){
 				// contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
 				// just in case the o.link isn't an <a>
-				var att = (this.tagName === "A") ? 'href' : o.targetAttr;
-				base.animate($(this).attr(att), flag);
+				base.animate($(this).attr(o.targetAttr) || $(this).attr('href'), flag);
 				return false;
 			});
 		// find items (li's) based on links (a's)
@@ -212,7 +220,7 @@ $.visualNav = function(el, options){
 			base.$curContent = $(sel)
 				.closest('.' + o.contentClass)
 				.addClass(o.currentContent);
-			if (typeof o.changed === 'function') {
+			if (base.initialized && typeof o.changed === 'function') {
 				o.changed( base, base.$curContent );
 			}
 		}

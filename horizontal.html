@@ -7,12 +7,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>visualNav + Bootstrap demo</title>
+	<title>visualNav Horizontal demo</title>
 
 	<link rel="stylesheet" href="demo/bootstrap.min.css">
 	<link rel="stylesheet" href="css/demo.css">
 	<style>
-	/*** Bootstrap demo ***/
+	/*** Copied from Bootstrap demo ***/
 	/* Make the content div have enough padding at the top so
 		the inner-content appears below the bootstrap nav bar */
 	.content {
@@ -23,18 +23,53 @@
 	<script src="demo/modernizr-2.6.2.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script src="js/jquery.easing.1.2.js"></script>
+	<script src="js/jquery.mousewheel.js"></script>
 
 	<script src="js/jquery.visualNav.js"></script>
 	<script>
 	$(function(){
-		$('.navbar').visualNav({
-			selectedClass : 'active'
+		// adjust overall window size to keep all content in one row
+		var w, timer,
+		wait = true,
+		navbar = $('.navbar'),
+		win = $(window),
+		adjustOverallWidth = function(){
+			w = ( $('.content').length - 1 ) * ( win.width() + 20 ); // adding 20px for margins
+			$('body').css({ width : w, height: win.height() - 50 }); // subtract out nav bar height + margins
+			// scroll to current hash - needed for page load and resizing
+			if (wait) {
+				wait = false;
+				timer = setTimeout(function(){
+					$('.navbar').visualNav( window.location.hash );
+					wait = true;
+				}, 300);
+			}
+		};
+		win.resize(function(){
+			adjustOverallWidth();
 		});
+
+		// make mousewheel scroll horizontally
+		$('body').mousewheel(function (event, delta) {
+			// get normalized body for scrolling
+			w = navbar.data('visualNav').$body;
+			// multiples of 30 seems to work well
+			w.scrollLeft( w.scrollLeft() + (delta * -30) );
+			return false;
+		});
+
+		// initialize visualNav
+		navbar.visualNav({
+			selectedClass : 'active',
+			fitContent  : true,
+			initialized: adjustOverallWidth
+		});
+
 	});
 	</script>
 
 </head>
-<body class="bootstrap">
+<body id="horiz">
 
 	<!--[if lt IE 7]>
 	<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
@@ -61,10 +96,10 @@
 				<li class="external external-horiz">
 					Demos: (
 					<a href="index.html" title="Vertical">V</a>|
-					<a href="horizontal.html" title="Horizontal">H</a> |
+					<a class="current" href="horizontal.html" title="Horizontal">H</a> |
 					<a href="horiz-vert.html" title="Horizontal/Vertical">H/V</a>|
 					<a href="stepper.html" title="Section stepper">Step</a>|
-					<a class="current" href="bootstrap.html" title="Twitter Bootstrap">Boot</a> )
+					<a href="bootstrap.html" title="Twitter Bootstrap">Boot</a> )
 				</li>
 
 			</ul>
@@ -87,13 +122,13 @@
 			<p>Suspendisse nec dui quam. Donec in nibh urna. Donec blandit consequat augue vitae sollicitudin. Nunc ultrices, urna sed cursus adipiscing, dolor elit blandit metus, at lacinia velit ante et nibh. Etiam eget erat felis. Sed ornare, tellus a aliquet dapibus, ante risus suscipit velit, et faucibus purus sem ut leo.</p>
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<br>
-			<nav class="links">
-				<a href="#home" class="visualNav">Home</a> |
-				<a href="#work" class="visualNav">Work</a> |
-				<a href="#blog" class="visualNav">Blog</a> |
-				<a href="#projects" class="visualNav">Projects</a> |
-				<a href="#about" class="visualNav">About</a> |
-				<a href="#contact" class="visualNav">Contact</a>
+			<nav class="visualNav">
+				<a href="#home">Home</a> |
+				<a href="#work">Work</a> |
+				<a href="#blog">Blog</a> |
+				<a href="#projects">Projects</a> |
+				<a href="#about">About</a> |
+				<a href="#contact">Contact</a>
 			</nav>
 		</div>
 	</article>
@@ -115,13 +150,13 @@
 				<img src="images/icon3.png" height="60" alt="book">&nbsp;Donec iaculis, est nec feugiat tristique, elit nibh blandit elit, a malesuada sem mauris sit amet justo. Maecenas nisl libero, rhoncus eu sodales eget, viverra in urna. Cras in commodo felis. Curabitur dapibus tempus urna vitae fringilla. Nunc urna mi, iaculis id elementum et, placerat ut diam. Etiam tristique ligula vel arcu cursus rhoncus. Maecenas eget risus lobortis lacus aliquet condimentum.
 			</span>
 			<br><br>
-			<nav class="links">
-				<a href="#home" class="visualNav">Home</a> |
-				<a href="#work" class="visualNav">Work</a> |
-				<a href="#blog" class="visualNav">Blog</a> |
-				<a href="#projects" class="visualNav">Projects</a> |
-				<a href="#about" class="visualNav">About</a> |
-				<a href="#contact" class="visualNav">Contact</a>
+			<nav class="visualNav">
+				<a href="#home">Home</a> |
+				<a href="#work">Work</a> |
+				<a href="#blog">Blog</a> |
+				<a href="#projects">Projects</a> |
+				<a href="#about">About</a> |
+				<a href="#contact">Contact</a>
 			</nav>
 		</div>
 	</article>
@@ -139,13 +174,13 @@
 			<p>Suspendisse nec dui quam. Donec in nibh urna. Donec blandit consequat augue vitae sollicitudin. Nunc ultrices, urna sed cursus adipiscing, dolor elit blandit metus, at lacinia velit ante et nibh. Etiam eget erat felis. Sed ornare, tellus a aliquet dapibus, ante risus suscipit velit, et faucibus purus sem ut leo.</p>
 			<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum in diam metus. Morbi libero risus, adipiscing eu convallis quis, mattis in libero. Cras lobortis, sem sit amet aliquet hendrerit, nulla leo tempus urna, eu aliquam purus massa eget elit. Sed cursus tristique neque, ac commodo sapien imperdiet nec.</p><p>Fusce tincidunt, sapien in dignissim porta, leo velit egestas lorem, ac mattis lorem sapien a magna. Nam ut purus nisi. Maecenas viverra est et nisl aliquam in imperdiet tellus pulvinar.</p><p>Phasellus non pellentesque diam. Sed ac urna vel ligula tempus mollis consequat vitae sapien. Curabitur diam sem, vulputate eu viverra et, consequat sit amet tortor. Integer tempor commodo urna, quis hendrerit velit tincidunt ac. Cras pretium hendrerit odio ac facilisis. Curabitur vestibulum condimentum nulla, eget tincidunt quam porta sit amet. Proin nec nisl a odio semper vehicula.</p>
 			<br>
-			<nav class="links">
-				<a href="#home" class="visualNav">Home</a> |
-				<a href="#work" class="visualNav">Work</a> |
-				<a href="#blog" class="visualNav">Blog</a> |
-				<a href="#projects" class="visualNav">Projects</a> |
-				<a href="#about" class="visualNav">About</a> |
-				<a href="#contact" class="visualNav">Contact</a>
+			<nav class="visualNav">
+				<a href="#home">Home</a> |
+				<a href="#work">Work</a> |
+				<a href="#blog">Blog</a> |
+				<a href="#projects">Projects</a> |
+				<a href="#about">About</a> |
+				<a href="#contact">Contact</a>
 			</nav>
 		</div>
 	</article>
@@ -167,13 +202,13 @@
 				<li>Quisque vitae dui tellus, convallis ullamcorper justo. Fusce vitae lectus purus, eget semper sapien. Nulla imperdiet tellus ut dolor ultrices ultrices nec egestas ipsum. Suspendisse ultricies, turpis a egestas posuere, libero ligula pretium nisl, ut auctor libero urna in tortor.</li>
 				<li>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</li>
 			</ol>
-			<nav class="links">
-				<a href="#home" class="visualNav">Home</a> |
-				<a href="#work" class="visualNav">Work</a> |
-				<a href="#blog" class="visualNav">Blog</a> |
-				<a href="#projects" class="visualNav">Projects</a> |
-				<a href="#about" class="visualNav">About</a> |
-				<a href="#contact" class="visualNav">Contact</a>
+			<nav class="visualNav">
+				<a href="#home">Home</a> |
+				<a href="#work">Work</a> |
+				<a href="#blog">Blog</a> |
+				<a href="#projects">Projects</a> |
+				<a href="#about">About</a> |
+				<a href="#contact">Contact</a>
 			</nav>
 		</div>
 	</article>
@@ -189,13 +224,13 @@
 
 			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
 			<p>Sed cursus, lacus pharetra pellentesque aliquam, felis erat tristique ante, eget sodales est erat pulvinar elit. Nam felis tellus, luctus eu pharetra eu, vulputate lacinia ligula. Nam arcu enim, interdum eget mollis ut, vulputate sit amet mi. Nam massa neque, mattis id porta sit amet, viverra id lacus. Nam ultricies pellentesque urna cursus pretium. Donec libero justo, interdum vel ornare et, luctus malesuada diam. Curabitur fringilla magna quis mauris gravida et vulputate massa ultrices. Aliquam erat volutpat. Etiam nec ante sit amet lorem fringilla iaculis eget a orci. Nulla in nulla tortor.</p>
-			<nav class="links">
-				<a href="#home" class="visualNav">Home</a> |
-				<a href="#work" class="visualNav">Work</a> |
-				<a href="#blog" class="visualNav">Blog</a> |
-				<a href="#projects" class="visualNav">Projects</a> |
-				<a href="#about" class="visualNav">About</a> |
-				<a href="#contact" class="visualNav">Contact</a>
+			<nav class="visualNav">
+				<a href="#home">Home</a> |
+				<a href="#work">Work</a> |
+				<a href="#blog">Blog</a> |
+				<a href="#projects">Projects</a> |
+				<a href="#about">About</a> |
+				<a href="#contact">Contact</a>
 			</nav>
 		</div>
 	</article>
@@ -221,16 +256,17 @@
 				<img src="images/icon2.png" height="50" alt="suitcase"> Donec iaculis, est nec feugiat tristique, elit nibh blandit elit, a malesuada sem mauris sit amet justo.
 			</span>
 			<br>
-			<nav class="links">
-				<a href="#home" class="visualNav">Home</a> |
-				<a href="#work" class="visualNav">Work</a> |
-				<a href="#blog" class="visualNav">Blog</a> |
-				<a href="#projects" class="visualNav">Projects</a> |
-				<a href="#about" class="visualNav">About</a> |
-				<a href="#contact" class="visualNav">Contact</a>
+			<nav class="visualNav">
+				<a href="#home">Home</a> |
+				<a href="#work">Work</a> |
+				<a href="#blog">Blog</a> |
+				<a href="#projects">Projects</a> |
+				<a href="#about">About</a> |
+				<a href="#contact">Contact</a>
 			</nav>
 		</div>
 	</article>
+	<br> <!-- this <br> is needed to get the last content panel to center; horizontal scrolling demo only -->
 
 	</section>
 	<!-- end contents -->
