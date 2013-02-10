@@ -36,6 +36,12 @@
 
 ## Change Log
 
+### Version 2.4.1
+
+* Merged in optimization by [annavester](https://github.com/annavester). Thanks for contributing!
+* Added gitignore and gitattribute files.
+* Added manifest file for jQuery plugin registry site.
+
 ### Version 2.4
 
 * Added `stopOnInteraction` option
