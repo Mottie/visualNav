@@ -26,11 +26,12 @@ $.visualNav = function(el, options){
 		// Opera scrolling fix - http://www.zachstronaut.com/posts/2009/01/18/jquery-smooth-scroll-bugs.html
 		var sel, scrollElement = 'html, body';
 		$('html, body').each(function(){
-			var initScrollTop = $(this).scrollTop();
-			$(this).scrollTop(initScrollTop + 1);
-			if ($(this).scrollTop() === initScrollTop + 1) {
+		  var $this = $(this);
+			var initScrollTop = $this.scrollTop();
+			$this.scrollTop(initScrollTop + 1);
+			if ($this.scrollTop() === initScrollTop + 1) {
 				scrollElement = this.nodeName.toLowerCase();
-				$(this).scrollTop(initScrollTop);
+				$this.scrollTop(initScrollTop);
 				return false;
 			}
 		});
