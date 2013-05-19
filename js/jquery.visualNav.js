@@ -20,8 +20,8 @@ $.visualNav = function(el, options){
 		base.options = o = $.extend({}, $.visualNav.defaultOptions, options);
 
 		// Cached objects
-		base.win = window;
-		base.$win = $(base.win);
+		base.winLoc = window.location;
+		base.$win = $(window);
 		base.$doc = $(document);
 		// Opera scrolling fix - http://www.zachstronaut.com/posts/2009/01/18/jquery-smooth-scroll-bugs.html
 		var sel, scrollElement = 'html, body';
@@ -63,8 +63,8 @@ $.visualNav = function(el, options){
 		base.update();
 
 		// go to hash on page load
-		if (o.useHash && base.win.location.hash) {
-			base.animate(base.win.location.hash);
+		if (o.useHash && base.winLoc.hash) {
+			base.animate(base.winLoc.hash);
 		}
 
 		// update menu
@@ -153,9 +153,46 @@ $.visualNav = function(el, options){
 		}, 100);
 	};
 
+	base.updateHash = function(){
+		var hash,
+			id = (o.selectedAppliedTo === o.link) ? base.$curItem.attr('href') : base.$curItem.find(o.link).attr('href');
+		if (id) {
+			hash = id.replace( /^#/, '' );
+			var fx, node = $( '#' + hash );
+			if ( node.length ) {
+				node.attr( 'id', '' );
+				fx = $( '<div></div>' )
+				.css({
+					position:'absolute',
+					visibility:'hidden',
+					top: $(document).scrollTop() + 'px'
+				})
+				.attr( 'id', hash )
+				.appendTo( document.body );
+			}
+			base.setHash('#' + hash);
+			if ( node.length ) {
+				fx.remove();
+				node.attr( 'id', hash );
+			}
+
+		}
+	};
+
+	base.setHash = function(newHash){
+		if (base.winLoc.hash !== newHash){
+			if (base.winLoc.replace){
+				base.winLoc.replace(newHash);
+			} else {
+				// replace not supported by IE8/9... they get full history
+				base.winLoc.hash = newHash;
+			}
+		}
+	};
+
 	// flag is needed for initialization
 	base.completed = function(flag){
-		if (o.useHash) { base.win.location.hash = base.curHash; }
+		if (o.useHash) { base.setHash('#' + base.curHash); }
 
 		// callbacks
 		if (base.initialized) {
@@ -225,6 +262,8 @@ $.visualNav = function(el, options){
 				o.changed( base, base.$curContent );
 			}
 		}
+
+		base.updateHash();
 
 	};
 
