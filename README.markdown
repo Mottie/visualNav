@@ -36,6 +36,11 @@
 
 ## Change Log
 
+### Version 2.4.2
+
+* Hash now updates while scrolling. Fixes [issue #7](https://github.com/Mottie/visualNav/issues/7).
+* Merged in a fix ([pull #9](https://github.com/Mottie/visualNav/pull/9)) for a selector that was not properly scoped. Thanks [jewlofthelotus](https://github.com/jewlofthelotus)!
+
 ### Version 2.4.1
 
 * Merged in optimization by [annavester](https://github.com/annavester). Thanks for contributing!
@@ -96,25 +101,4 @@
 
 * Updated the `contentLinks` and `externalLinks` options:
   * These options contain the class name that could only be applied to a link `<a>` to work properly
-  * Now any element with either of these class names can contain links  
-
-### Version 2.3
-
-* Added an `externalLinks` option:
-  * This option contains the class name applied to links within the navigation menu which are ignored by this plugin.
-  * Use it for external page links or popups, as needed.
-  * The default value is `"external"`.
-* Added a Bootstrap demo.
-* Changed the HTML basic layout to include a inner content wrapper
-  * This inner wrapper now has the styling applied to it - border, background, padding, etc.
-  * The outer "content" wrapper provides the margins to allow for a side menu or top menu (like Bootstrap) and keep the content in view, not under the menu.
-
-### Version 2.2
-
-* visualNav updated to work with horizontal and/or vertical page layouts.
-* Added a second demo to show the menu working with both horizontal and vertical content.
-* Added useHash option that turns on (true, default setting) or off (false) the updating of the hash in the url.
-* Added fitContent option that resizes the content when true (false by default). For use when horizontal content is present.
-* Added easing option which adds easing to horizontal and/or vertical scrolling.
-* Added animation to reposition the content on initial load if a hash tag is present.
-* Fixed a bug where links contained in the menu wrapper, but not inside the menu wouldn't work - see link to other demo (in the demo) to see what I mean.
+  * Now any element with either of these class names can contain links
