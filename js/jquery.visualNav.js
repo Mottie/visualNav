@@ -254,8 +254,9 @@ $.visualNav = function(el, options){
 		if (base.$curItem[0] !== base.$lastItem[0]) {
 			base.$lastItem = base.$curItem;
 			base.$content.removeClass(o.currentContent);
-			sel = $('.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link)).attr(o.targetAttr);
-			base.$curContent = $(sel)
+		        sel = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
+      			tar = base.$el.find(sel).attr(o.targetAttr);
+      			base.$curContent = $(tar)
 				.closest('.' + o.contentClass)
 				.addClass(o.currentContent);
 			if (base.initialized && typeof o.changed === 'function') {
