@@ -1,5 +1,5 @@
 /*!
- * Visual Navigation (visualNav) v2.4.2
+ * Visual Navigation (visualNav) v2.4.3
  * https://github.com/Mottie/visualNav/wiki
  * by Rob Garrison (Mottie)
  * MIT licensed.
@@ -264,7 +264,9 @@ $.visualNav = function(el, options){
 			}
 		}
 
-		base.updateHash();
+		if (o.useHash) {
+			base.updateHash();
+		}
 
 	};
 
