@@ -37,6 +37,10 @@
 
 ## Change Log
 
+### Version 2.4.3
+
+* Only call `updateHash` if the `useHash` option is set. Fixes [issue #10](https://github.com/Mottie/visualNav/issues/10).
+
 ### Version 2.4.2
 
 * Hash now updates while scrolling. Fixes [issue #7](https://github.com/Mottie/visualNav/issues/7).
