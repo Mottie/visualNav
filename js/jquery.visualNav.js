@@ -25,6 +25,7 @@ $.visualNav = function(el, options){
 		base.$win = $(window);
 		base.$doc = $(document);
 		base.$body = $('html, body'); // include 'html' for IE
+		base.curHash = '';
 
 		base.$lastItem = [ null ];
 		base.namespace = '.visualNav';
@@ -150,33 +151,33 @@ $.visualNav = function(el, options){
 	};
 
 	base.updateHash = function(){
-		var hash,
-			id = (o.selectedAppliedTo === o.link) ? base.$curItem.attr('href') : base.$curItem.find(o.link).attr('href');
-		if (id) {
-			hash = id.replace( /^#/, '' );
-			var fx, node = $( '#' + hash );
-			if ( node.length ) {
-				node.attr( 'id', '' );
-				fx = $( '<div></div>' )
-				.css({
-					position:'absolute',
-					visibility:'hidden',
-					top: $(document).scrollTop() + 'px'
-				})
-				.attr( 'id', hash )
-				.appendTo( document.body );
+		var $fx, $node,
+			id = (o.selectedAppliedTo === o.link) ? base.$curItem.attr('href') : base.$curItem.find(o.link).attr('href'),
+			hash = ( id || '' ).replace( /^#/, '' );
+		if (id && hash !== '' && hash !== base.curHash) {
+			$node = $( '#' + hash );
+			base.curHash = hash;
+			if ( $node.length ) {
+				$node.attr( 'id', '' );
+				$fx = $( '<div></div>' )
+					.css({
+						position: 'absolute',
+						visibility: 'hidden',
+						top: $(document).scrollTop() + 'px'
+					})
+					.attr( 'id', hash )
+					.appendTo( document.body );
 			}
 			base.setHash('#' + hash);
-			if ( node.length ) {
-				fx.remove();
-				node.attr( 'id', hash );
+			if ( $node.length ) {
+				$fx.remove();
+				$node.attr( 'id', hash );
 			}
-
 		}
 	};
 
 	base.setHash = function(newHash){
-		if (base.winLoc.hash !== newHash){
+		if (base.winLoc.hash !== newHash && newHash !== '#'){
 			if (base.winLoc.replace){
 				base.winLoc.replace(newHash);
 			} else {
@@ -260,7 +261,7 @@ $.visualNav = function(el, options){
 			}
 		}
 
-		if (o.useHash) {
+		if (o.useHash && base.initialized) {
 			base.updateHash();
 		}
 
