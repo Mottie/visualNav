@@ -6,16 +6,17 @@
  */
 /*jshint jquery:true */
 ;(function($){
-"use strict";
+'use strict';
 $.visualNav = function(el, options){
 	// Access to jQuery and DOM versions of element
 	var o, base = this;
 	base.$el = $(el);
 
 	// Add a reverse reference to the DOM object
-	base.$el.data("visualNav", base);
+	base.$el.data('visualNav', base);
 
 	base.init = function(){
+		var $sel;
 		base.initialized = false;
 		base.options = o = $.extend({}, $.visualNav.defaultOptions, options);
 
@@ -23,21 +24,10 @@ $.visualNav = function(el, options){
 		base.winLoc = window.location;
 		base.$win = $(window);
 		base.$doc = $(document);
-		// Opera scrolling fix - http://www.zachstronaut.com/posts/2009/01/18/jquery-smooth-scroll-bugs.html
-		var sel, scrollElement = 'html, body';
-		$('html, body').each(function(){
-			var $this = $(this);
-			var initScrollTop = $this.scrollTop();
-			$this.scrollTop(initScrollTop + 1);
-			if ($this.scrollTop() === initScrollTop + 1) {
-				scrollElement = this.nodeName.toLowerCase();
-				$this.scrollTop(initScrollTop);
-				return false;
-			}
-		});
-		base.$body = $(scrollElement);
+		base.$body = $('html, body'); // include 'html' for IE
 
 		base.$lastItem = [ null ];
+		base.namespace = '.visualNav';
 
 		// check easing
 		$.each(o.easing, function(i,v){
@@ -48,7 +38,7 @@ $.visualNav = function(el, options){
 
 		// Stop animated scroll if the user does something
 		if (o.stopOnInteraction) {
-			base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e){
+			base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup '.split(' ').join( base.namespace + ' '), function(e){
 				if (e.which > 0 || e.type === 'mousedown' || e.type === 'mousewheel'){
 					base.$body.stop();
 				}
@@ -56,7 +46,7 @@ $.visualNav = function(el, options){
 		}
 
 		// Adjust side menu on scroll and resize
-		base.$win.bind('scroll resize', function(){
+		base.$win.bind('scroll resize '.split(' ').join( base.namespace + ' '), function(){
 			base.throttle();
 		});
 
@@ -97,8 +87,8 @@ $.visualNav = function(el, options){
 			return (!$l.hasClass(l) && !$l.closest(l).length) ? el : null;
 		}) );
 		l = '.' + o.contentLinks;
-		// add links inside the content - the links must have a "visualNav" class name,
-		// or be within a container of class "visualNav"
+		// add links inside the content - the links must have a 'visualNav' class name,
+		// or be within a container of class 'visualNav'
 		base.$links.add( $(l + ',' + l + ' a') )
 			// make them clickable
 			.unbind('click.visualNav')
@@ -128,6 +118,7 @@ $.visualNav = function(el, options){
 				if (base.initialized && typeof o.beforeAnimation === 'function') {
 					o.beforeAnimation( base, $sel );
 				}
+
 				// get content top or top position if at the document bottom, then animate
 				base.$body.stop().animate({
 					scrollLeft : Math.min( $sel.offset().left, base.$doc.width() - base.$win.width() ) - base.leftMargin,
@@ -235,7 +226,7 @@ $.visualNav = function(el, options){
 		// cycling through each link during the scroll may be slow on some computers/browsers
 		base.$links.each(function(i){
 			sel = $(this).attr(o.targetAttr);
-			tar = (sel === "#" || sel.length <= 1) ? '' : $(sel); // ignore links that don't point anywhere
+			tar = (sel === '#' || sel.length <= 1) ? '' : $(sel); // ignore links that don't point anywhere
 			if (tar.length) {
 				locTop = Math.ceil(tar.offset().top);
 				locLeft = Math.ceil(tar.offset().left);
@@ -259,9 +250,9 @@ $.visualNav = function(el, options){
 		if (base.$curItem[0] !== base.$lastItem[0]) {
 			base.$lastItem = base.$curItem;
 			base.$content.removeClass(o.currentContent);
-		        sel = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-      			tar = base.$el.find(sel).attr(o.targetAttr);
-      			base.$curContent = $(tar)
+			sel = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
+			tar = base.$el.find(sel).attr(o.targetAttr);
+			base.$curContent = $(tar)
 				.closest('.' + o.contentClass)
 				.addClass(o.currentContent);
 			if (base.initialized && typeof o.changed === 'function') {
@@ -282,9 +273,9 @@ $.visualNav = function(el, options){
 
 $.visualNav.defaultOptions = {
 	// use link & targetAttr in case you want to use <div class="link" data-target="#Home">Home</div>
-	// the link = "div.link" and targetAttr = "data-target"
+	// the link = 'div.link' and targetAttr = 'data-target'
 	link              : 'a',         // Add a link class, as necessary.
-	targetAttr        : 'href',      // added in case you have link = "div" and attribute something like data-target.
+	targetAttr        : 'href',      // added in case you have link = 'div' and attribute something like data-target.
 	selectedAppliedTo : 'li',        // to only apply to the link, use the same value as is in the link option.
 	contentClass      : 'content',   // content class to get height of the section.
 	contentLinks      : 'visualNav', // class name of links inside the content that act like the visualNav menu (smooth scroll).
@@ -303,9 +294,9 @@ $.visualNav.defaultOptions = {
 	scrollOnInit      : false,       // scroll to first item automatically on initialization
 
 	// Animation
-	animationTime     : 1200,                 // page scrolling time in milliseconds.
-	easing            : [ 'swing', 'swing' ], // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
+	animationTime     : 1200,        // page scrolling time in milliseconds.
 	stopOnInteraction : true,        // if the user presses any key or scrolls the mouse, the animation will cancel
+	easing            : [ 'swing', 'swing' ], // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
 
 	// Callbacks
 	initialized       : null,        // Callback executed when the visualNav plugin has finished initializing
@@ -324,7 +315,7 @@ $.fn.visualNav = function(options){
 			} else {
 				nav.update();
 			}
-		} else if (typeof options === "string" && /^(#|\.)/.test(options)) {
+		} else if (typeof options === 'string' && /^(#|\.)/.test(options)) {
 			// string provided, check if it's an ID or class
 			nav.animate(options);
 		}
@@ -334,7 +325,7 @@ $.fn.visualNav = function(options){
 // This function breaks the chain, but returns
 // the visualNav if it has been attached to the object.
 $.fn.getvisualNav = function(){
-	return this.data("visualNav");
+	return this.data('visualNav');
 };
 
 })(jQuery);
