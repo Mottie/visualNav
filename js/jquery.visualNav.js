@@ -126,7 +126,7 @@ $.visualNav = function(el, options){
 				// get content top or top position if at the document bottom, then animate
 				base.$body.stop().animate({
 					scrollLeft : Math.min( $sel.offset().left, base.$doc.width() - base.$win.width() ) - base.leftMargin,
-					scrollTop  : Math.min( $sel.offset().top, base.$doc.height() - base.$win.height() )
+					scrollTop  : Math.min( $sel.offset().top, base.$doc.height() - base.$win.height() ) - o.offsetTop
 				},{
 					queue         : false,
 					duration      : base.initialized ? o.animationTime : 0,
@@ -294,6 +294,7 @@ $.visualNav.defaultOptions = {
 	// Appearance
 	bottomMargin      : 100,         // Margin from the end of the page where the last menu item is used (in case the target is short).
 	fitContent        : false,       // If true, the contentClass width will be adjusted to fit the browser window (for horizontal pages).
+	offsetTop         : 0,           // add a top offset value (pixels) or jQuery element (height is measured), of any top menu or gap.
 
 	// Animation
 	animationTime     : 1200,                 // page scrolling time in milliseconds.
