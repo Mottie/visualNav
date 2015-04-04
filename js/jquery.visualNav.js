@@ -70,10 +70,14 @@ $.visualNav = function(el, options){
 		// update menu
 		base.findLocation();
 
-		// update content class & hash
-		sel = '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link);
-		// send true flag to signal initialization complete
-		base.$el.find(sel).trigger('click.visualNav', true);
+		if (o.scrollOnInit) {
+			// update content class & hash
+			$sel = base.$el.find( '.' + o.selectedClass + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link) );
+			// send true flag to signal initialization complete
+			base.animate( $sel.attr(o.targetAttr) || $sel.attr('href'), true );
+		} else {
+			base.completed( true );
+		}
 
 	};
 
@@ -99,9 +103,10 @@ $.visualNav = function(el, options){
 			// make them clickable
 			.unbind('click.visualNav')
 			.bind('click.visualNav', function(e, flag){
+				var $this = $( this );
 				// contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
 				// just in case the o.link isn't an <a>
-				base.animate($(this).attr(o.targetAttr) || $(this).attr('href'), flag);
+				base.animate( $this.attr(o.targetAttr) || $this.attr('href'), flag);
 				return false;
 			});
 		// find items (li's) based on links (a's)
@@ -295,6 +300,7 @@ $.visualNav.defaultOptions = {
 	bottomMargin      : 100,         // Margin from the end of the page where the last menu item is used (in case the target is short).
 	fitContent        : false,       // If true, the contentClass width will be adjusted to fit the browser window (for horizontal pages).
 	offsetTop         : 0,           // add a top offset value (pixels) or jQuery element (height is measured), of any top menu or gap.
+	scrollOnInit      : false,       // scroll to first item automatically on initialization
 
 	// Animation
 	animationTime     : 1200,                 // page scrolling time in milliseconds.
