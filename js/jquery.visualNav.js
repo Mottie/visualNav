@@ -110,9 +110,14 @@ $.visualNav = function(el, options){
 	};
 
 	base.animate = function(sel, flag){
-		if (sel !== '#' && $(sel).length) { // ignore non-existant targets & solitary '#'
-			var $sel = $(sel).eq(0).closest('.' + o.contentClass);
-			if ($sel.length) {
+		var $t,
+			$sel = $(sel);
+		// ignore non-existant targets & solitary '#'
+		if (sel !== '#' && $sel.length) {
+			$t = $(sel).eq(0).closest('.' + o.contentClass);
+			// target is inside of a content block, so target the content block instead
+			if ( $t.length ) { $sel = $t; }
+			if ( $sel.length ) {
 				base.curHash = $sel[0].id || '';
 				base.$curContent = $sel;
 				// callback before animation
@@ -152,7 +157,9 @@ $.visualNav = function(el, options){
 
 	base.updateHash = function(){
 		var $fx, $node,
-			id = (o.selectedAppliedTo === o.link) ? base.$curItem.attr('href') : base.$curItem.find(o.link).attr('href'),
+			id = ( o.selectedAppliedTo === o.link ) ?
+				base.$curItem.attr(o.targetAttr) || base.$curItem.attr('href') :
+				base.$curItem.find(o.link).attr(o.targetAttr) || base.$curItem.find(o.link).attr('href'),
 			hash = ( id || '' ).replace( /^#/, '' );
 		if (id && hash !== '' && hash !== base.curHash) {
 			$node = $( '#' + hash );
