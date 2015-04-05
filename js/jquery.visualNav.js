@@ -83,7 +83,7 @@ $.visualNav = function(el, options){
 			links = o.selectedAppliedTo + (o.selectedAppliedTo === o.link ? '' : ' ' + o.link),
 			l = '.' + o.externalLinks;
 		// find links that don't have the externalLinks class nor contained within an externalLinks container
-		base.$links = $( base.$el.find(links).map(function(i,el){
+		base.$links = $( base.$el.find(links).map(function(i, el){
 			$l = $(el);
 			return (!$l.hasClass(l) && !$l.closest(l).length) ? el : null;
 		}) );
@@ -110,7 +110,7 @@ $.visualNav = function(el, options){
 	};
 
 	base.animate = function(sel, flag){
-		var $t,
+		var $t, targetOffset, animationTime, scrollTop,
 			$sel = $(sel);
 		// ignore non-existant targets & solitary '#'
 		if (sel !== '#' && $sel.length) {
@@ -125,13 +125,23 @@ $.visualNav = function(el, options){
 					o.beforeAnimation( base, $sel );
 				}
 
+				targetOffset = $sel.offset();
+				scrollTop = Math.min( targetOffset.top, base.$doc.height() - base.$win.height() ) - o.offsetTop;
+
+				if ( typeof o.animationTime === 'function' ) {
+					// use animationTime function; default to 1200ms if nothing is returned
+					animationTime = ( o.animationTime( Math.abs( base.$body.scrollTop() - scrollTop ) ) ) || 1200;
+				} else {
+					animationTime = o.animationTime;
+				}
+
 				// get content top or top position if at the document bottom, then animate
 				base.$body.stop().animate({
-					scrollLeft : Math.min( $sel.offset().left, base.$doc.width() - base.$win.width() ) - base.leftMargin,
-					scrollTop  : Math.min( $sel.offset().top, base.$doc.height() - base.$win.height() ) - o.offsetTop
+					scrollLeft : Math.min( targetOffset.left, base.$doc.width() - base.$win.width() ) - base.leftMargin,
+					scrollTop  : scrollTop
 				},{
 					queue         : false,
-					duration      : base.initialized ? o.animationTime : 0,
+					duration      : base.initialized ? animationTime : 0,
 					easing        : o.easing[0], // added in case jQuery older than 1.4 is used
 					specialEasing : {
 						scrollLeft  : o.easing[0] || 'swing',
@@ -302,7 +312,7 @@ $.visualNav.defaultOptions = {
 	scrollOnInit      : false,       // scroll to first item automatically on initialization
 
 	// Animation
-	animationTime     : 1200,        // page scrolling time in milliseconds.
+	animationTime     : 1200,        // page scrolling time in milliseconds or function( distance ) { return milliseconds; }
 	stopOnInteraction : true,        // if the user presses any key or scrolls the mouse, the animation will cancel
 	easing            : [ 'swing', 'swing' ], // horizontal, vertical easing; if might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
 
