@@ -22,6 +22,7 @@ $.visualNav = function(el, options){
 
 		// Cached objects
 		base.winLoc = window.location;
+		base.history = ('history' in window) ? window.history : null;
 		base.$win = $(window);
 		base.$doc = $(document);
 		base.$body = $('html, body'); // include 'html' for IE
@@ -196,7 +197,11 @@ $.visualNav = function(el, options){
 	base.setHash = function(newHash){
 		if (base.winLoc.hash !== newHash && newHash !== '#'){
 			if (base.winLoc.replace){
-				base.winLoc.replace(newHash);
+				if (base.history != null) {
+					base.history.replaceState({}, '', newHash);
+				} else {
+					base.winLoc.replace(newHash);
+				}
 			} else {
 				// replace not supported by IE8/9... they get full history
 				base.winLoc.hash = newHash;
