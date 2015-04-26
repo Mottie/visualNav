@@ -37,6 +37,10 @@
 
 ## Change Log
 
+### Version 2.5.1
+
+* Preferentially use HTML5 History API. See [pull #11](https://github.com/Mottie/visualNav/pull/11). Thanks [daverodriguez](https://github.com/daverodriguez)!
+
 ### Version 2.5.0
 
 * Add `offsetTop` option - adds a top offset value (pixels) or jQuery element (height is measured), of any top menu or gap.
@@ -64,8 +68,3 @@
 ### Version 2.4.3
 
 * Only call `updateHash` if the `useHash` option is set. Fixes [issue #10](https://github.com/Mottie/visualNav/issues/10).
-
-### Version 2.4.2
-
-* Hash now updates while scrolling. Fixes [issue #7](https://github.com/Mottie/visualNav/issues/7).
-* Merged in a fix ([pull #9](https://github.com/Mottie/visualNav/pull/9)) for a selector that was not properly scoped. Thanks [jewlofthelotus](https://github.com/jewlofthelotus)!
