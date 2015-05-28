@@ -22,7 +22,7 @@ $.visualNav = function(el, options){
 
 		// Cached objects
 		base.winLoc = window.location;
-		base.history = ('history' in window) ? window.history : null;
+		base.history = ('replaceState' in window.history) ? window.history : null;
 		base.$win = $(window);
 		base.$doc = $(document);
 		base.$body = $('html, body'); // include 'html' for IE
