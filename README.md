@@ -37,6 +37,10 @@
 
 ## Change Log
 
+### Version 2.5.2
+
+* More specific check to fix oldIE bug. See [pull #13](https://github.com/Mottie/visualNav/pull/12). Thanks [daverodriguez](https://github.com/daverodriguez)!
+
 ### Version 2.5.1
 
 * Preferentially use HTML5 History API. See [pull #11](https://github.com/Mottie/visualNav/pull/11). Thanks [daverodriguez](https://github.com/daverodriguez)!
@@ -64,7 +68,3 @@
        return distance / 2;
      }
      ```
-
-### Version 2.4.3
-
-* Only call `updateHash` if the `useHash` option is set. Fixes [issue #10](https://github.com/Mottie/visualNav/issues/10).
