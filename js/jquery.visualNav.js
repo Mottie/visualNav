@@ -40,7 +40,7 @@ $.visualNav = function(el, options){
 
 		// Stop animated scroll if the user does something
 		if (o.stopOnInteraction) {
-			base.$body.bind('scroll mousedown DOMMouseScroll mousewheel keyup '.split(' ').join( base.namespace + ' '), function(e){
+			base.$body.on('scroll mousedown DOMMouseScroll mousewheel keyup '.split(' ').join( base.namespace + ' '), function(e){
 				if (e.which > 0 || e.type === 'mousedown' || e.type === 'mousewheel'){
 					base.$body.stop();
 				}
@@ -48,7 +48,7 @@ $.visualNav = function(el, options){
 		}
 
 		// Adjust side menu on scroll and resize
-		base.$win.bind('scroll resize '.split(' ').join( base.namespace + ' '), function(){
+		base.$win.on('scroll resize '.split(' ').join( base.namespace + ' '), function(){
 			base.throttle();
 		});
 
@@ -93,8 +93,8 @@ $.visualNav = function(el, options){
 		// or be within a container of class 'visualNav'
 		base.$links.add( $(l + ',' + l + ' a') )
 			// make them clickable
-			.unbind('click.visualNav')
-			.bind('click.visualNav', function(e, flag){
+			.off('click.visualNav')
+			.on('click.visualNav', function(e, flag){
 				var $this = $( this );
 				// contentLinks outside the menu can be anything, but if they are <a>, make sure we get the href
 				// just in case the o.link isn't an <a>
